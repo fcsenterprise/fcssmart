@@ -5,8 +5,7 @@ import java.io.Serializable;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 
-
-public class MyPermissionEvaluator implements PermissionEvaluator{
+public class MyPermissionEvaluator implements PermissionEvaluator {
 
 	@Override
 	public boolean hasPermission(Authentication authentication,

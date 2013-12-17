@@ -3,16 +3,16 @@
 	<div class="col-md-12">
 		<div class="box">
 			<div class="box-header">
-				<span class="title">Empresa</span>
+				<span class="title">Empresas</span>
 			</div>
 			<div class="box-content">
-				<form class="form-horizontal fill-up validatable" ng-submit="operacao()">
-
+				<form class="form-horizontal fill-up validatable">
 					<div class="padded">
 						<div class="form-group">
 							<label class="control-label col-lg-2">CNPJ/CEI</label>
 							<div class="col-lg-10">
-								<input type="text" ui-mask="999999999999/99" class="validate[required,minSize[14]]" ng-disabled="visualizar || excluir"
+								<input type="text" ui-mask="999999999999/99"
+									class="validate[required,minSize[14]]" ng-focus="true"
 									data-prompt-position="topLeft" ng-model="empresa.cnpjCei" />
 							</div>
 						</div>
@@ -20,120 +20,30 @@
 							<label class="control-label col-lg-2">Raz&atilde;o Social</label>
 							<div class="col-lg-10">
 								<input type="text" class="validate[required]"
-									data-prompt-position="topLeft" ng-model="empresa.razaoSocial" ng-disabled="visualizar || excluir" />
+									data-prompt-position="topLeft" ng-model="empresa.razaoSocial" />
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="control-label col-lg-2">Nome Fantasia</label>
 							<div class="col-lg-10">
 								<input type="text" class="validate[required]"
-									data-prompt-position="topLeft" ng-model="empresa.nomeFantasia" ng-disabled="visualizar || excluir"/>
+									data-prompt-position="topLeft" ng-model="empresa.nomeFantasia" />
 							</div>
 						</div>
+
 						<div class="form-group">
-							<label class="control-label col-lg-2">Inscri&ccedil;&atilde;o Estadual</label>
+							<label class="control-label col-lg-2">Inscri&ccedil;&atilde;o
+								Estadual</label>
 							<div class="col-lg-10">
 								<input type="text" class="validate[required]"
-									data-prompt-position="topLeft" ng-model="empresa.inscricaoEstadual" ng-disabled="visualizar || excluir"/>
+									data-prompt-position="topLeft" ui-mask="99.999.999-9"
+									ng-model="empresa.inscricaoEstadual" />
 							</div>
 						</div>
-					
-<!-- 						<div class="form-group"> -->
-<!-- 							<label class="control-label col-lg-2">Endereços</label> -->
-<!-- 							<div class="col-lg-10"> -->
-<!-- 								<button class="btn btn-blue" data-dismiss="modal" type="submit" -->
-<!-- 									ng-click="initAddresses()">Novo Endereço</button> -->
-<!-- 								<div class="accordion" id="accordion2" -->
-<!-- 									ng-show="client.addresses.length > 0"> -->
-<!-- 									<div class="accordion-group" -->
-<!-- 										ng-repeat="endereco in empresa.enderecos"> -->
-<!-- 										<div class="accordion-heading"> -->
-<!-- 											<a class="accordion-toggle" data-toggle="collapse" -->
-<!-- 												data-parent="#accordion2" ng-href="#{{endereco.id}}"> -->
-<!-- 												{{endereco.id}} - {{endereco.descricao}} </a> -->
-<!-- 										</div> -->
-<!-- 										<div id="{{address.id}}" class="accordion-body collapse" -->
-<!-- 											ng-class="{'in' : ($index==0)}"> -->
-<!-- 											<form class="form-horizontal fill-up separate-sections"> -->
-<!-- 												<div class="padded"> -->
-<!-- 													<div class="form-group"> -->
-<!-- 														<label class="control-label col-lg-2">ID</label> -->
-<!-- 														<div class="col-lg-10"> -->
-<!-- 															<input type="text" class="validate[required]" -->
-<!-- 																data-prompt-position="topLeft" ng-model="endereco.id" /> -->
-<!-- 														</div> -->
-<!-- 													</div> -->
-<!-- 													<div class="form-group"> -->
-<!-- 														<label class="control-label col-lg-2">Descricao</label> -->
-<!-- 														<div class="col-lg-10"> -->
-<!-- 															<input type="text" class="validate[required]" -->
-<!-- 																data-prompt-position="topLeft" -->
-<!-- 																ng-model="endereco.descricao" /> -->
-<!-- 														</div> -->
-<!-- 													</div> -->
-<!-- 													<div class="form-group"> -->
-<!-- 														<label class="control-label col-lg-2">Rua</label> -->
-<!-- 														<div class="col-lg-10"> -->
-<!-- 															<input type="text" class="validate[required]" -->
-<!-- 																data-prompt-position="topLeft" ng-model="endereco.rua" /> -->
-<!-- 														</div> -->
-<!-- 													</div> -->
-<!-- 													<div class="form-group"> -->
-<!-- 														<label class="control-label col-lg-2">CEP</label> -->
-<!-- 														<div class="col-lg-10"> -->
-<!-- 															<input type="text" class="validate[required]" -->
-<!-- 																data-prompt-position="topLeft" ng-model="endereco.cep" /> -->
-<!-- 														</div> -->
-<!-- 													</div> -->
-<!-- 												</div> -->
-<!-- 												<div class="modal-footer"> -->
-<!-- 													<button class="btn btn-default" data-dismiss="modal" -->
-<!-- 														type="submit" ng-click="removeAddress(address)">Remover</button> -->
-<!-- 													<button class="btn btn-blue" data-dismiss="modal" -->
-<!-- 														type="submit" ng-click="saveAddress(address)">Save -->
-<!-- 														changes</button> -->
-<!-- 												</div> -->
-<!-- 											</form> -->
-<!-- 										</div> -->
-<!-- 									</div> -->
-<!-- 								</div> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
-
-<!-- 						<div class="form-group"> -->
-<!-- 							<label class="control-label col-lg-2">Username</label> -->
-<!-- 							<div class="col-lg-10"> -->
-<!-- 								<input type="text" class="validate[required]" -->
-<!-- 									data-prompt-position="topLeft" /> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
-
-<!-- 						<div class="form-group"> -->
-<!-- 							<label class="control-label col-lg-2">Password</label> -->
-<!-- 							<div class="col-lg-10"> -->
-<!-- 								<input type="password" id="password" -->
-<!-- 									class="validate[required,minSize[4]]"> <span -->
-<!-- 									class="help-block note"><i class="icon-warning-sign"></i> -->
-<!-- 									Please use a secure password.</span> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
-
-<!-- 						<div class="form-group"> -->
-<!-- 							<label class="control-label col-lg-2">Confirmation</label> -->
-<!-- 							<div class="col-lg-10"> -->
-<!-- 								<input type="password" id="password_confirmation" -->
-<!-- 									class="validate[required,equals[password],minSize[4]]" /> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
-
-<!-- 					</div> -->
-
-					<div class="form-actions">
-						<button type="submit" class="btn btn-blue" ng-disabled="visualizar">{{excluir && 'Excluir' || 'Salvar'}}</button>
-						<a type="button" class="btn btn-default" ng-href="#/empresas">Voltar</a>
+						<app-actions resource="/erp/empresa/:paramId" value="empresa"></app-actions>
 					</div>
-
 				</form>
+				<empresa-table empresa="empresa"></empresa-table>
 			</div>
 		</div>
 	</div>

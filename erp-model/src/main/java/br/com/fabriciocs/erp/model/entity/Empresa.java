@@ -1,9 +1,12 @@
 package br.com.fabriciocs.erp.model.entity;
 
+import java.util.List;
+
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.annotations.Table;
 import org.springframework.stereotype.Repository;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Table("empresas")
@@ -45,6 +48,15 @@ public class Empresa extends Model {
 
 	public void setInscricaoEstadual(String inscricaoEstadual) {
 		setString("inscricaoEstadual", inscricaoEstadual);
+	}
+
+	public void addDepartamento(Departamento departamento) {
+		add(departamento);
+	}
+
+	@JsonIgnore
+	public List<Departamento> getDepartamentos() {
+		return getAll(Departamento.class);
 	}
 
 }

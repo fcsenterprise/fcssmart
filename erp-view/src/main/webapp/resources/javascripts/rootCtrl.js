@@ -1,75 +1,39 @@
-$app = angular.module('rootCtrl', [ 'ngResource', 'ngTable', 'ui.mask' ]);
+$app = angular.module('rootCtrl', [ 'ngResource', 'ui.mask',
+		'$strap.directives' ]);
 
-$app.config(function($routeProvider) {
-	$routeProvider.when('/home', {
-		controller : listCtrl,
-		templateUrl : 'list.html'
-	}).when('/clientList', {
-		controller : 'clientListCtrl',
-		templateUrl : 'clientList.html'
-	}).when('/produtos', {
-		controller : produtosCtrl,
-		templateUrl : 'produtos.html'
-	}).when('/empresas', {
-		controller : 'EmpresaListCtrl',
-		templateUrl : 'empresaList.html'
-	}).when('/empresa/:operacao/:cnpjCei', {
+$app.config(function($routeProvider, $httpProvider) {
+	$routeProvider.when('/empresa', {
 		controller : 'EmpresaCtrl',
 		templateUrl : 'empresa.html'
-	}).when('/departamentos', {
-		controller : 'DepartamentoListCtrl',
-		templateUrl : 'departamentoList.html'
-	}).when('/departamento/:operacao/:nome', {
+	}).when('/departamento', {
 		controller : 'DepartamentoCtrl',
 		templateUrl : 'departamento.html'
+	}).when('/funcionario', {
+		controller : 'FuncionarioCtrl',
+		templateUrl : 'funcionario.html'
+	}).when('/menu', {
+		controller : 'MenuCtrl',
+		templateUrl : 'menu.html'
 	}).otherwise({
-		redirectTo : '/'
+		redirectTo : '/empresa'
 	});
-
 });
-$app.run(function($rootScope, $resource) {
+$app.run(function($rootScope, $resource, $timeout) {
 	$rootScope.config = {
 		appName : "AngularJS",
 		logado : true,
-		mainRoute : [ {
-			link : "#",
-			name : "Home"
-		}, {
-			link : "#",
-			name : "Settings"
-		}, {
-			link : "#",
-			name : "Help"
-		} ],
 		userProfile : {
 			name : "Fabrício Santos",
 			avatar : "../../images/avatars/avatar1.jpg"
-		},
-		menus : [ {
-			id : "menu1",
-			name : "Menu Principal",
-			link : "/",
-			icon : "icon-hand-up",
-			subMenus : [ {
-				name : "Empresas",
-				link : "#/empresas",
-				icon : "icon-hand-up"
-			}, {
-				name : "Departamentos",
-				link : "#/departamentos",
-				icon : "icon-hand-up"
-			} ]
-		} ]
+		}
 	};
 
-	$rootScope.fruits = [ "banana", "apple", "orange" ];
 	Config = $resource("/config");
 	$rootScope.loadConfig = function() {
 		Config.query(function(data) {
 			$rootScope.config = data;
 		});
 	};
-	// $rootScope.loadConfig();
 
 	$rootScope.page = {
 		title : "Home",
@@ -77,241 +41,489 @@ $app.run(function($rootScope, $resource) {
 		icon : "icon-home"
 	};
 });
-
-function listCtrl($scope, $location) {
-	if (!$scope.config.logado) {
-		$location.path('/');
-	}
-	$scope.page.title = "list";
-	$scope.page.subTitle = "list";
-	$scope.page.icon = "icon-home";
-	$scope.client = {
-		name : "fabricio",
-		email : "fabricio@com.br",
-		getAddressById : function(id) {
-			for ( var i = 0; i < this.addresses.length; i++) {
-				if (this.addresses[i].id == id) {
-					return i;
-				}
-			}
-			;
-			return -1;
-		},
-		addresses : []
-	};
-
-	$scope.initAddresses = function() {
-		$scope.client.addresses.unshift({
-			id : $scope.client.addresses.length + 1,
-			description : "Novo Endereço"
-		});
-	};
-	$scope.saveAddress = function(address) {
-		var addressId = $scope.client.getAddressById(address.id);
-		if (addressId != -1) {
-			$scope.client.addresses[addressId] = address;
-		} else {
-			$scope.client.addresses.push(address);
-		}
-
-		alert("Endereço: " + address.id + " salvo com sucesso!");
-	};
-	$scope.removeAddress = function(address) {
-		var addressId = $scope.client.getAddressById(address.id);
-		if (addressId != -1) {
-			$scope.client.addresses[addressId] = null;
-			$scope.client.addresses.length--;
-			alert("Endereço: " + address.id + " removido com sucesso!");
-		} else {
-			alert("Endereço com o id: " + address.id + " não foi encontrado!");
-		}
-	};
-}
-
-function produtosCtrl($scope, $http) {
-	$scope.page.title = "produto";
-	$scope.page.subTitle = "fruits to edit";
-	$scope.fruits = Array();
-	$scope.getData = function() {
-		$http.get("../../data/produto/db.db").success(function(data) {
-			$scope.fruits = data.fruits;
-			console.log($scope.fruits);
-		}).error(function(data) {
-			alert("Error...");
-			console.log(data);
-		});
-	};
-}
-$app
-		.controller(
-				'EmpresaListCtrl',
-				function($scope, $filter, ngTableParams, $routeParams,
-						$resource) {
-					var Empresas = $resource("/erp/empresa/:pageSize/:pageNumber/:orderFields");
-
-					$scope.pageTemplate = [ '05', '10', '15', '25', '50', '100' ];
-					$scope.pageSize = '10';
-					$scope.load = function(pageSize, pageNumber, orderFields) {
-						$scope.empresasTableParams = new ngTableParams({
-							page : pageNumber,
-							count : pageSize,
-							orderBy : orderFields
-						}, {
-							total : function() {
-								return getData().data.length;
-							},
-							getData : function($defer, params) {
-								Empresas.get({
-									'pageSize' : params.count(),
-									'pageNumber' : params.page(),
-									'orderFields' : 'cnpjCei'
-								}, function(data) {
-									if (data.data !== undefined
-											&& data.data.length !== undefined) {
-										params.total(data.total);
-										params.pageCount = data.pageCount;
-										$defer.resolve(data.data);
-									} else {
-										params.total(0);
-										$defer.resolve([]);
-									}
-									return data;
-								});
-							}
-						});
-					};
-
-					$scope.load(10, 1, "razaoSocial asc");
-				});
-$app.controller('EmpresaCtrl', function($scope, $filter, ngTableParams,
-		$routeParams, $resource, $location) {
-	var Empresa = $resource("/erp/empresa/:cnpjCeiParam", {
-		cnpjCeiParam : '@cnpjCeiParam'
+function EmpresaCtrl($scope, $resource, $location, $route) {
+	var Empresa = $resource("/erp/empresa/:paramId", {
+		paramId : '@paramId'
 	});
 
-	$scope.salvar = ($routeParams.operacao == 0);
-	$scope.visualizar = ($routeParams.operacao == 1);
-	$scope.editar = ($routeParams.operacao == 2);
-	$scope.excluir = ($routeParams.operacao == 3);
+	$scope.$root.breadCumbs = [ {
+		name : 'Cadastros Basicos',
+		icon : 'fa fa-book'
+	}, {
+		name : 'Empresa',
+		icon : 'fa fa-building-o'
+	} ];
 
-	$scope.operacao = function() {
+	$scope.salvar = function() {
 		Empresa.save($scope.empresa, function(data) {
-			$location.path("/empresas");
+			alert("Salvo Com Sucesso");
+			$route.reload();
+		}, function(data) {
+			alert(data.data);
 		});
 	};
-	var cnpjCei = $routeParams.cnpjCei;
-	if ($scope.excluir) {
-		$scope.operacao = function() {
-			Empresa.remove({
-				cnpjCeiParam : cnpjCei
-			}, function(data) {
-				$location.path("/empresas");
-			});
-		};
-	}
-	if (cnpjCei !== undefined) {
-		Empresa.get({
-			cnpjCeiParam : cnpjCei
+	$scope.excluir = function() {
+		Empresa.remove({
+			'paramId' : $scope.empresa.id
 		}, function(data) {
-			$scope.empresa = data;
+			$location.path("/empresa");
 		});
-	}
-});
-$app.controller('DepartamentoCtrl', function($scope, $filter, ngTableParams,
-		$routeParams, $resource, $location) {
-	var Departamento = $resource("/erp/departamento/:nomeParam", {
-		nomeParam : '@nomeParam'
+	};
+
+}
+function DepartamentoCtrl($scope, $filter, $routeParams, $resource, $location,
+		$route) {
+	var Departamento = $resource("/erp/departamento/:paramId", {
+		paramId : '@paramId'
 	});
 
-	$scope.salvar = ($routeParams.operacao == 0);
-	$scope.visualizar = ($routeParams.operacao == 1);
-	$scope.editar = ($routeParams.operacao == 2);
-	$scope.excluir = ($routeParams.operacao == 3);
+	$scope.$root.breadCumbs = [ {
+		name : 'Cadastros Basicos',
+		icon : 'fa fa-book'
+	}, {
+		name : 'Departamento',
+		icon : 'fa fa-group'
+	} ];
+	$scope.salvar = function() {
 
-	$scope.operacao = function() {
 		Departamento.save($scope.departamento, function(data) {
 			$location.path("/departamentos");
 		});
 	};
 	var nome = $routeParams.nome;
-	if ($scope.excluir) {
-		$scope.operacao = function() {
-			Departamento.remove({
-				nomeParam : nome
-			}, function(data) {
-				$location.path("/departamentos");
-			});
-		};
-	}
-	if (nome !== undefined) {
-		Departamento.get({
-			nomeParam : nome
+	$scope.excluir = function() {
+		Departamento.remove({
+			paramId : $scope.departamento.id
 		}, function(data) {
-			$scope.departamento = data;
+			$location.path("/departamentos");
 		});
-	}
+	};
+}
+function FuncionarioCtrl($scope) {
+	$scope.$root.breadCumbs = [ {
+		name : 'Cadastros Basicos',
+		icon : 'fa fa-book'
+	}, {
+		name : 'Funcionario',
+		icon : 'fa fa-user'
+	} ];
+}
+
+function MenuCtrl($scope, $resource) {
+	$scope.$root.breadCumbs = [ {
+		name : 'Cadastros Basicos',
+		icon : 'fa fa-book'
+	}, {
+		name : 'Menus',
+		icon : 'fa fa-list-ul'
+	} ];
+
+}
+$app
+		.directive(
+				'appMenu',
+				function($compile, $resource, $q) {
+					return {
+						restrict : 'E',
+						scope : {
+							menus : '=',
+						},
+						link : function compile(scope, element, attrs) {
+							var Menus = $resource('/erp/menu/all/:paramId', {
+								paramId : '@paramId'
+							});
+							var getSuperMenu = function() {
+								return '<ul class="nav navbar-collapse collapse navbar-collapse-primary"> </ul>';
+							};
+							var getMenu = function(id, nome) {
+								return '<li class="dark-nav"> '
+										+ '<span class="glow"></span> <a class="accordion-toggle" data-toggle="collapse" ng-href="#'
+										+ id
+										+ '"> <i class="fa fa-folder icon-2x"></i> <span class="ng-binding">'
+										+ nome
+										+ '<i class="icon-caret-down"></i>'
+										+ '</span></a><ul id="' + id
+										+ '" class="collapse" style="height: auto;"></ul></li>';
+							};
+							var getSubmenu = function(url, icone, nome) {
+								return '<li><a '
+										+ (url == null ? '' : 'ng-href="' + url
+												+ '"')
+										+ '> <i class="'
+										+ icone + '"></i>' + nome + '</a></li>';
+							};
+							var i = 0;
+							var create = function(menus, element) {
+								menus
+										.forEach(function(menu) {
+											var newEl;
+											if (menu.subMenus !== undefined
+													&& menu.subMenus.length > 0) {
+												var menuId = scope.$id + (++i);
+												newEl = angular
+														.element(getMenu(
+																menuId,
+																menu.nome));
+												element.append(newEl);
+												create(menu.subMenus, newEl.find('#'+menuId));
+											} else {
+												newEl = angular
+														.element(getSubmenu(
+																menu.url,
+																menu.icone,
+																menu.nome));
+												element.append(newEl);
+											}
+										});
+							};
+							Menus.query(function(menus) {
+								var sMenuEl = angular.element(getSuperMenu());
+								create(menus, sMenuEl);
+								element.replaceWith(sMenuEl);
+								$compile(sMenuEl)(scope);
+							}, function(data) {
+								console.log(data);
+								alert(data);
+							});
+						}
+					}
+				});
+
+$app
+		.directive(
+				'menuTable',
+				function($compile) {
+					return {
+						restrict : 'E',
+						scope : {
+							menu : '=',
+							columns : '=?',
+						},
+						compile : function compile(tElement, tAttrs, transclude) {
+							return {
+								pre : function preLink(scope, element, attrs,
+										controller) {
+									template = '<div class="box">'
+											+ '<div class="box-header">'
+											+ '	<span class="title">Menus</span>'
+											+ '</div><div class="box-content">'
+											+ '<div id="dataTable">'
+											+ '<table id="'
+											+ scope.$id
+											+ '" app-table app-table-columns="columns"'
+											+ 'app-table-selected="menu" app-table-action="#/menu/"'
+											+ 'app-table-link="/erp/menu"></table></div></div></div>';
+									scope.columns = [ {
+										'mData' : 'id',
+										'sTitle' : 'ID'
+									}, {
+										'mData' : 'nome',
+										'sTitle' : 'Nome'
+									}, {
+										'mData' : 'url',
+										'sTitle' : 'Url'
+									}, {
+										'mData' : 'icone',
+										'sTitle' : '&Iacute;cone'
+									}, {
+										'mData' : 'nomeMenuPai',
+										'sTitle' : 'Menu Pai'
+									} ];
+									var currentElement = angular
+											.element(template);
+									element.replaceWith(currentElement);
+									$compile(currentElement)(scope);
+								}
+							};
+						}
+					};
+				});
+$app
+		.directive(
+				'funcionarioTable',
+				function($compile) {
+					return {
+						restrict : 'E',
+						scope : {
+							funcionario : '=',
+							columns : '=?',
+						},
+						compile : function compile(tElement, tAttrs, transclude) {
+							return {
+								pre : function preLink(scope, element, attrs,
+										controller) {
+									template = '<div class="box">'
+											+ '<div class="box-header">'
+											+ '	<span class="title">Funcionarios</span>'
+											+ '</div><div class="box-content">'
+											+ '<div id="dataTable">'
+											+ '<table id="'
+											+ scope.$id
+											+ '" app-table app-table-columns="columns"'
+											+ 'app-table-selected="funcionario" app-table-action="#/funcionario/"'
+											+ 'app-table-link="/erp/funcionario"></table></div></div></div>';
+									scope.columns = [ {
+										'mData' : 'id',
+										'sTitle' : 'ID'
+									}, {
+										'mData' : 'nome',
+										'sTitle' : 'Nome'
+									}, {
+										'mData' : 'cpf',
+										'sTitle' : 'cpf'
+									}, {
+										'mData' : 'dataNascimento',
+										'sTitle' : 'Data Nascimento'
+									}, {
+										'mData' : 'credencial.login',
+										'sTitle' : 'Login'
+									}, {
+										'mData' : 'credencial.email',
+										'sTitle' : 'Email'
+									} ];
+									var currentElement = angular
+											.element(template);
+									element.replaceWith(currentElement);
+									$compile(currentElement)(scope);
+								}
+							};
+						}
+					};
+				});
+$app.directive('appTable', function($location, $modal) {
+
+	return {
+		restrict : 'A, C',
+		requires : '^table',
+		link : function(scope, element, attrs, controller) {
+			element.addClass("dTable table responsive table-responsive");
+			var dataTable = element.dataTable({
+				aoColumns : scope.appTableColumns,
+				bJQueryUI : false,
+				bAutoWidth : false,
+				sPaginationType : "full_numbers",
+				sDom : "<\"table-header\"flr>t<\"table-footer\"ip>",
+				bServerSide : true,
+				aLengthMenu : [ [ 5, 10, 25, 50 ], [ '05', 10, 25, 50 ] ],
+				iDisplayLength : 5,
+				sAjaxSource : scope.appTableLink,
+				fnRowCallback : function(nRow, aData, iDisplayIndex) {
+					var el = angular.element(nRow);
+					el.on('click', function(obj) {
+						el.parent().children().removeClass('danger');
+						el.addClass('danger');
+						var pos = obj.currentTarget._DT_RowIndex;
+						scope.appTableSelected = dataTable.fnGetData()[pos];
+						scope.$apply();
+					});
+				}
+			});
+		},
+		scope : {
+			appTableColumns : "=",
+			appTableLink : "@",
+			appTableSelected : "=",
+			appEditLink : "@"
+		}
+	};
+});
+
+$app.directive('appModal', function() {
+	return {
+		restrict : 'EA',
+		templateUrl : '/resources/components/modal.html',
+		transclude : true,
+		scope : {
+			modalId : '@',
+			modalTitle : '@',
+		}
+	};
+});
+
+$app.directive('modalShower', function() {
+	return {
+		restrict : 'A',
+		transclude : false,
+		scope : {
+			modalId : '@'
+		},
+		link : function(scope, element, attrs) {
+			element.on('click', function() {
+				$('#' + scope.modalId).modal('show');
+			});
+		}
+	};
 });
 
 $app
-		.controller(
-				'DepartamentoListCtrl',
-				function($scope, $filter, ngTableParams, $routeParams,
-						$resource) {
-					var Departamentos = $resource("/erp/departamento/:pageSize/:pageNumber/:orderFields");
-
-					$scope.pageTemplate = [ '05', '10', '15', '25', '50', '100' ];
-					$scope.pageSize = '10';
-					$scope.load = function(pageSize, pageNumber, orderFields) {
-						$scope.departamentoTableParams = new ngTableParams({
-							page : pageNumber,
-							count : pageSize,
-							orderBy : orderFields
-						}, {
-							total : function() {
-								return getData().data.length;
-							},
-							getData : function($defer, params) {
-								Departamentos.get({
-									'pageSize' : params.count(),
-									'pageNumber' : params.page(),
-									'orderFields' : 'nome'
-								}, function(data) {
-									if (data.data !== undefined
-											&& data.data.length !== undefined) {
-										params.total(data.total);
-										params.pageCount = data.pageCount;
-										$defer.resolve(data.data);
-									} else {
-										params.total(0);
-										$defer.resolve([]);
-									}
-									return data;
-								});
-							}
-						});
+		.directive(
+				'empresaTable',
+				function($compile) {
+					return {
+						restrict : 'E',
+						scope : {
+							empresa : '=',
+							columns : '=?',
+						},
+						compile : function compile(tElement, tAttrs, transclude) {
+							return {
+								pre : function preLink(scope, element, attrs,
+										controller) {
+									template = '<div class="box">'
+											+ '<div class="box-header">'
+											+ '	<span class="title">Empresas</span>'
+											+ '</div><div class="box-content">'
+											+ '<div id="dataTable">'
+											+ '<table id="'
+											+ scope.$id
+											+ '" app-table app-table-columns="columns"'
+											+ 'app-table-selected="empresa" app-table-action="#/empresa/"'
+											+ 'app-table-link="/erp/empresa" app-edit-link="/empresa"></table></div></div></div>';
+									scope.columns = [
+											{
+												'mData' : 'id',
+												'sTitle' : 'ID'
+											},
+											{
+												'mData' : 'cnpjCei',
+												'sTitle' : 'CNPJ/CEI'
+											},
+											{
+												'mData' : 'razaoSocial',
+												'sTitle' : 'Raz&atilde;o Social'
+											},
+											{
+												'mData' : 'nomeFantasia',
+												'sTitle' : 'Nome Fantasia'
+											},
+											{
+												'mData' : 'inscricaoEstadual',
+												'sTitle' : 'Inscri&ccedil;&atilde;o Estadual'
+											} ];
+									var currentElement = angular
+											.element(template);
+									element.replaceWith(currentElement);
+									$compile(currentElement)(scope);
+								}
+							};
+						}
 					};
-
-					$scope.load(10, 1, "razaoSocial asc");
 				});
+$app
+		.directive(
+				'appFormGroup',
+				function() {
+					return {
+						restrict : 'E',
+						replace : true,
+						compile : function() {
+						},
+						scope : {
+							label : '@',
+							type : '@?',
+							class : '=?',
+							dataPromptPosition : '@?',
+							uiMask : '@?',
+							value : '='
+						},
+						template : '<div class="form-group">'
+								+ '<label class="control-label col-lg-2">{{label}}</label>'
+								+ '<div class="col-lg-10">'
+								+ '<input type="{{type || "text"}}" ng-class="class"'
+								+ ' data-prompt-position="{{dataPromptPosition || "topLeft"}}" ui-mask="{{uiMask || "*" }}"'
+								+ ' ng-model="value" /></div></div>',
+						link : function(scope, element, attrs) {
+							scope.$watch('value', function(newValue) {
+								scope.value = newValue;
+								scope.$apply();
+							});
+						}
+					};
+				});
+$app
+		.directive(
+				'appActions',
+				function($resource, $route) {
+					return {
+						restrict : 'E',
+						template : '<div class="form-actions ">'
+								+ '<button type="button" class="btn btn-blue" ng-click="salvar()">Salvar</button>'
+								+ '<button type="button" class="btn btn-blue" ng-show="value && value.id" ng-click="excluir()">Excluir</button>'
+								+ '<button type="button" class="btn btn-blue" ng-click="value = {}">Limpar</button>'
+								+ '</div>',
+						scope : {
+							resource : '@',
+							value : '='
+						},
+						link : function(scope, element, attrs) {
+							var Resource = $resource(scope.resource, {
+								paramId : '@paramId'
+							});
 
-$app.filter('makeRange', function() {
-	return function(input) {
-		var lowBound, highBound;
-		switch (input.length) {
-		case 1:
-			lowBound = 0;
-			highBound = parseInt(input[0]) - 1;
-			break;
-		case 2:
-			lowBound = parseInt(input[0]);
-			highBound = parseInt(input[1]);
-			break;
-		default:
-			return input;
-		}
-		var result = [];
-		for ( var i = lowBound; i <= highBound; i++)
-			result.push(i);
-		return result;
-	};
-});
+							scope.salvar = function() {
+								Resource.save(scope.value, function(data) {
+									alert("Salvo Com Sucesso");
+									$route.reload();
+								}, function(data) {
+									alert(data.data);
+								});
+							};
+							scope.excluir = function() {
+								Resource.remove({
+									'paramId' : scope.value.id
+								}, function(data) {
+									alert("Excluído Com Sucesso");
+									$route.reload();
+								}, function(data) {
+									alert(data.data);
+								});
+							};
+						}
+					};
+				});
+$app
+		.directive(
+				'departamentoTable',
+				function($compile) {
+					return {
+						restrict : 'E',
+						scope : {
+							departamento : '=',
+							columns : '=?',
+						},
+						compile : function compile(tElement, tAttrs, transclude) {
+							return {
+								pre : function preLink(scope, element, attrs,
+										controller) {
+									template = '<div class="box">'
+											+ '<div class="box-header">'
+											+ '	<span class="title">Departamentos</span>'
+											+ '</div><div class="box-content">'
+											+ '<div id="dataTable">'
+											+ '<table id="'
+											+ scope.$id
+											+ '" app-table app-table-columns="columns"'
+											+ 'app-table-selected="departamento" app-table-action="#/departamento/"'
+											+ 'app-table-link="/erp/departamento" ></table></div></div></div>';
+									scope.columns = [ {
+										'mData' : 'id',
+										'sTitle' : 'ID'
+									}, {
+										'mData' : 'nome',
+										'sTitle' : 'Nome'
+									}, {
+										'mData' : 'descricao',
+										'sTitle' : 'Descri&ccedil;&atilde;o'
+									}, {
+										'mData' : 'empresa.razaoSocial',
+										'sTitle' : 'Empresa'
+									} ];
+									var currentElement = angular
+											.element(template);
+									element.replaceWith(currentElement);
+									$compile(currentElement)(scope);
+								}
+							};
+						}
+					};
+				});

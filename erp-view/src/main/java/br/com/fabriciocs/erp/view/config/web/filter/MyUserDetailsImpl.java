@@ -13,7 +13,7 @@ public class MyUserDetailsImpl implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username)
 			throws UsernameNotFoundException {
-		return Credencial.<Credencial>findFirst("login = ?", username);
+		return Credencial.<Credencial> findFirst("login = ?", username);
 	}
 
 }

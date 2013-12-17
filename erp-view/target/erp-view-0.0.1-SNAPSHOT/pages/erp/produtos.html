@@ -1,0 +1,7 @@
+<button ng-click="getData()">Get Data</button>
+ <h2 ng-show="fruits.length>0">Fruits</h2>
+ <ul>
+ <li ng-repeat="fruit in fruits" >
+ {{fruit.id}} - {{fruit.name}} ({{fruit.color}})
+ </li>
+ </ul>

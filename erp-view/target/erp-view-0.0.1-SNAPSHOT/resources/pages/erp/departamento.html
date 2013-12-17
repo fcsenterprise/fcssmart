@@ -1,0 +1,64 @@
+<!-- find me in partials/data_tables_custom -->
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="box">
+			<div class="box-header">
+				<span class="title">Departamento</span>
+			</div>
+			<div class="box-content">
+				<div id="mml" class="modal fade">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"
+									aria-hidden="true">&times;</button>
+								<h4 class="modal-title">title</h4>
+							</div>
+							<div class="modal-body nopadding">
+								<empresa-table empresa="departamento.empresa" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<form class="form-horizontal fill-up validatable">
+
+					<div class="padded">
+						<div class="form-group">
+							<label class="control-label col-lg-2">Empresa</label>
+							<div class="col-lg-10">
+								<a modal-shower modal-id="mml" class="btn btn-green">Empresa:
+								</a> <span class="alert alert-info" ng-show="departamento.empresa">{{departamento.empresa.id}}
+									- {{departamento.empresa.cnpjCei}} -
+									{{departamento.empresa.razaoSocial}}</span>
+
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-lg-2">Nome</label>
+							<div class="col-lg-10">
+								<input type="text" class="validate[required,minSize[14]]"
+									data-prompt-position="topLeft" ng-model="departamento.nome" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-lg-2">Descri&ccedil;&atilde;o</label>
+							<div class="col-lg-10">
+								<input type="text" class="validate[required]"
+									data-prompt-position="topLeft"
+									ng-model="departamento.descricao" />
+							</div>
+						</div>
+						<app-actions resource="/erp/departamento/:paramId"
+							value="departamento" />
+					</div>
+				</form>
+				<departamento-table departamento="departamento" />
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12"></div>
+</div>

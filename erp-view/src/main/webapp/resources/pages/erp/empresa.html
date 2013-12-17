@@ -1,0 +1,50 @@
+<!-- find me in partials/data_tables_custom -->
+<div class="row">
+	<div class="col-md-12">
+		<div class="box">
+			<div class="box-header">
+				<span class="title">Empresas</span>
+			</div>
+			<div class="box-content">
+				<form class="form-horizontal fill-up validatable">
+					<div class="padded">
+						<div class="form-group">
+							<label class="control-label col-lg-2">CNPJ/CEI</label>
+							<div class="col-lg-10">
+								<input type="text" ui-mask="999999999999/99"
+									class="validate[required,minSize[14]]" ng-focus="true"
+									data-prompt-position="topLeft" ng-model="empresa.cnpjCei" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-lg-2">Raz&atilde;o Social</label>
+							<div class="col-lg-10">
+								<input type="text" class="validate[required]"
+									data-prompt-position="topLeft" ng-model="empresa.razaoSocial" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-lg-2">Nome Fantasia</label>
+							<div class="col-lg-10">
+								<input type="text" class="validate[required]"
+									data-prompt-position="topLeft" ng-model="empresa.nomeFantasia" />
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-lg-2">Inscri&ccedil;&atilde;o
+								Estadual</label>
+							<div class="col-lg-10">
+								<input type="text" class="validate[required]"
+									data-prompt-position="topLeft" ui-mask="99.999.999-9"
+									ng-model="empresa.inscricaoEstadual" />
+							</div>
+						</div>
+						<app-actions resource="/erp/empresa/:paramId" value="empresa"></app-actions>
+					</div>
+				</form>
+				<empresa-table empresa="empresa"></empresa-table>
+			</div>
+		</div>
+	</div>
+</div>

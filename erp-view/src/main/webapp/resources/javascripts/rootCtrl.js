@@ -307,19 +307,18 @@ $app.directive('appTable', function($location, $modal) {
 				sAjaxSource : scope.appTableLink,
 				fnRowCallback : function(nRow, aData, iDisplayIndex) {
 					var el = angular.element(nRow);
-					el.on('click',
-							function(obj) {
-								el.parent().children().removeClass('danger');
-								if (scope.appTableSelected !== undefined) {
-									scope.appTableSelectd = undefined;
-								} else {
-									el.addClass('danger');
-									var pos = obj.currentTarget._DT_RowIndex;
-									scope.appTableSelected = dataTable
-											.fnGetData()[pos];
-								}
-								scope.$apply();
-							});
+					el.on('click', function(obj) {
+						el.parent().children().removeClass('danger');
+						var pos = obj.currentTarget._DT_RowIndex;
+						var selected = dataTable.fnGetData()[pos];
+						if (scope.appTableSelected == selected) {
+							scope.appTableSelected = {};
+						} else {
+							el.addClass('danger');
+							scope.appTableSelected = selected;
+						}
+						scope.$apply();
+					});
 				}
 			});
 		},

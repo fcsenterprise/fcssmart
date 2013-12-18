@@ -6,20 +6,20 @@ import java.util.Map.Entry;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import br.com.fabriciocs.erp.model.entity.Departamento;
+import br.com.fabriciocs.erp.model.entity.Funcionario;
 
-@RequestMapping("departamento")
+@RequestMapping("funcionario")
 @Controller
-public class DepartamentoCtrl extends genericCtrl<Departamento> {
+public class FuncionarioCtrl extends genericCtrl<Funcionario> {
 
-	public DepartamentoCtrl() {
-		super(Departamento.class);
+	public FuncionarioCtrl() {
+		super(Funcionario.class);
 	}
 
 	@Override
 	protected Entry<String, Object[]> getParams(String search) {
-		String query = "id::text like ? or nome like ? or descricao like ?";
-		Object[] params = new Object[] { search, search, search };
+		String query = "id::text like ? or nome like ? or cpf like ? or dataNascimento::text like ?";
+		Object[] params = new Object[] { search, search, search, search };
 		return new AbstractMap.SimpleEntry<String, Object[]>(query, params);
 	}
 }

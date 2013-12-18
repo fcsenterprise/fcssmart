@@ -14,7 +14,8 @@ import br.com.fabriciocs.erp.model.entity.Configuracao;
 @RequestMapping("/config")
 public class ConfigCtrl {
 	@RequestMapping(produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE }, method = { RequestMethod.GET })
-	public @ResponseBody Collection<Configuracao> getConfiguracoes() {
+	public @ResponseBody
+	Collection<Configuracao> getConfiguracoes() {
 		return Configuracao.findAll();
 	}
 }

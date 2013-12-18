@@ -4,39 +4,26 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.annotations.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.DigestUtils;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Repository
 @Table("Credenciais")
-@JsonIgnoreProperties({ "frozen", "valid", "idName", "longId",
-		"password", "senha" })
+@JsonIgnoreProperties({ "frozen", "valid", "idName", "longId", "new",
+		"username", "password", "enabled", "authorities", "metamodelLocal",
+		"parents", "cachedParent", "accountNonExpired", "accountNonLocked",
+		"credentialsNonExpired" })
 public class Credencial extends Model implements UserDetails {
 
 	public Credencial() {
-	}
-
-	@PostConstruct
-	private void init() {
-
-	}
-
-	@Transactional
-	public void salvar() {
-		set("login", "fabricio");
-		set("senha", "senha");
-		set("email", "Email");
-		saveIt();
 	}
 
 	public String getLogin() {
@@ -47,12 +34,14 @@ public class Credencial extends Model implements UserDetails {
 		set("login", login);
 	}
 
+	@JsonIgnore
 	public String getSenha() {
-		return (String) get("senha");
+		return getString("senha");
 	}
 
+	@JsonProperty("senha")
 	public void setSenha(String senha) {
-		senha = DigestUtils.md5DigestAsHex(senha.getBytes());
+		// senha = DigestUtils.md5DigestAsHex(senha.getBytes());
 		set("senha", senha);
 	}
 
@@ -62,14 +51,6 @@ public class Credencial extends Model implements UserDetails {
 
 	public void setEmail(String email) {
 		set("email", email);
-	}
-
-	public Long getId() {
-		return getLongId();
-	}
-
-	public void setId(Long id) {
-		set("id", id);
 	}
 
 	@Override

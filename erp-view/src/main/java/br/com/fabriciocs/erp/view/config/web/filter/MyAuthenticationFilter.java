@@ -19,8 +19,7 @@ public class MyAuthenticationFilter extends
 			HttpServletResponse response) {
 		String userName = obtainUsername(request);
 		String password = obtainPassword(request);
-		return (StringUtils.hasText(userName) && StringUtils
-				.hasText(password));
+		return (StringUtils.hasText(userName) && StringUtils.hasText(password));
 	}
 
 	@Override

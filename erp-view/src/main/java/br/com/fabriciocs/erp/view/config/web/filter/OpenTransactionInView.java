@@ -35,10 +35,8 @@ public class OpenTransactionInView implements Filter {
 		try {
 			Base.open(dataSource);
 			Base.openTransaction();
-
 			logger.info(request.toString());
 			chain.doFilter(request, response);
-
 			Base.commitTransaction();
 		} catch (IOException e) {
 			Base.rollbackTransaction();

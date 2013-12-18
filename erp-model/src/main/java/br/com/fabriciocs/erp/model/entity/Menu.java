@@ -1,17 +1,11 @@
 package br.com.fabriciocs.erp.model.entity;
 
-import java.util.List;
-
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.annotations.BelongsTo;
 import org.javalite.activejdbc.annotations.Table;
 import org.springframework.stereotype.Repository;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Repository
 @Table("Menus")
@@ -46,19 +40,13 @@ public class Menu extends Model {
 		add(subMenu);
 	}
 
-	@JsonInclude(Include.NON_NULL)
 	public void setMenu(Menu menu) {
-		if (menu.getId() != null) {
+		if (menu != null && menu.getId() != null) {
 			setParent(menu);
 		}
 	}
-	@JsonBackReference
+
 	public Menu getMenu() {
 		return parent(Menu.class);
-	}
-
-	@JsonManagedReference
-	public List<Menu> getSubMenus() {
-		return getAll(Menu.class);
 	}
 }

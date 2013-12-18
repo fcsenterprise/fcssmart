@@ -142,39 +142,36 @@ $app
 										+ '"> <i class="fa fa-folder icon-2x"></i> <span class="ng-binding">'
 										+ nome
 										+ '<i class="icon-caret-down"></i>'
-										+ '</span></a><ul id="' + id
+										+ '</span></a><ul id="'
+										+ id
 										+ '" class="collapse" style="height: auto;"></ul></li>';
 							};
 							var getSubmenu = function(url, icone, nome) {
 								return '<li><a '
 										+ (url == null ? '' : 'ng-href="' + url
-												+ '"')
-										+ '> <i class="'
-										+ icone + '"></i>' + nome + '</a></li>';
+												+ '"') + '> <i class="' + icone
+										+ '"></i>' + nome + '</a></li>';
 							};
 							var i = 0;
 							var create = function(menus, element) {
-								menus
-										.forEach(function(menu) {
-											var newEl;
-											if (menu.subMenus !== undefined
-													&& menu.subMenus.length > 0) {
-												var menuId = scope.$id + (++i);
-												newEl = angular
-														.element(getMenu(
-																menuId,
-																menu.nome));
-												element.append(newEl);
-												create(menu.subMenus, newEl.find('#'+menuId));
-											} else {
-												newEl = angular
-														.element(getSubmenu(
-																menu.url,
-																menu.icone,
-																menu.nome));
-												element.append(newEl);
-											}
-										});
+								menus.forEach(function(menu) {
+									var newEl;
+									if (menu.children !== undefined
+											&& menu.children.length > 0) {
+										var menuId = scope.$id + (++i);
+										newEl = angular.element(getMenu(menuId,
+												menu.object.nome));
+										element.append(newEl);
+										create(menu.children, newEl.find('#'
+												+ menuId));
+									} else {
+										newEl = angular.element(getSubmenu(
+												menu.object.url,
+												menu.object.icone,
+												menu.object.nome));
+										element.append(newEl);
+									}
+								});
 							};
 							Menus.query(function(menus) {
 								var sMenuEl = angular.element(getSuperMenu());
@@ -226,8 +223,9 @@ $app
 										'mData' : 'icone',
 										'sTitle' : '&Iacute;cone'
 									}, {
-										'mData' : 'nomeMenuPai',
-										'sTitle' : 'Menu Pai'
+										'mData' : 'menu.nome',
+										'sTitle' : 'Menu Pai',
+										'sDefaultContent' : ''
 									} ];
 									var currentElement = angular
 											.element(template);
@@ -309,13 +307,19 @@ $app.directive('appTable', function($location, $modal) {
 				sAjaxSource : scope.appTableLink,
 				fnRowCallback : function(nRow, aData, iDisplayIndex) {
 					var el = angular.element(nRow);
-					el.on('click', function(obj) {
-						el.parent().children().removeClass('danger');
-						el.addClass('danger');
-						var pos = obj.currentTarget._DT_RowIndex;
-						scope.appTableSelected = dataTable.fnGetData()[pos];
-						scope.$apply();
-					});
+					el.on('click',
+							function(obj) {
+								el.parent().children().removeClass('danger');
+								if (scope.appTableSelected !== undefined) {
+									scope.appTableSelectd = undefined;
+								} else {
+									el.addClass('danger');
+									var pos = obj.currentTarget._DT_RowIndex;
+									scope.appTableSelected = dataTable
+											.fnGetData()[pos];
+								}
+								scope.$apply();
+							});
 				}
 			});
 		},

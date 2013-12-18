@@ -18,9 +18,9 @@
 	<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource"
 		destroy-method="close">
 		<property name="driverClass" value="com.mysql.jdbc.Driver" />
-		<property name="jdbcUrl" value="jdbc:mysql://127.4.205.2:3306/erp" />
+		<property name="jdbcUrl" value="jdbc:mysql://127.4.205.2:3306/bestsmart"/>
 		<property name="username" value="adminkYEUnWZ" />
-		<property name="password" value="hjw2DMUGk7MN‏" />
+		<property name="password" value="hjw2DMUGk7MN" />
 	</bean>
 	
 	<bean id="txManager"

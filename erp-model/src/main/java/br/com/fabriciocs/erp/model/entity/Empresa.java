@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@Table("empresas")
+@Table("Empresas")
 @Repository
 @JsonIgnoreProperties({ "frozen", "valid", "idName", "longId", "new" })
 public class Empresa extends Model {

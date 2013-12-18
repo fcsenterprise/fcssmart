@@ -8,14 +8,13 @@ import org.javalite.activejdbc.annotations.Table;
 import org.springframework.stereotype.Repository;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Repository
-@Table("menus")
+@Table("Menus")
 @JsonIgnoreProperties({ "frozen", "valid", "idName", "longId", "new" })
 @BelongsTo(parent = Menu.class, foreignKeyName = "menuPai")
 public class Menu extends Model {

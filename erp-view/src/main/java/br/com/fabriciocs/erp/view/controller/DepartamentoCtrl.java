@@ -18,7 +18,7 @@ public class DepartamentoCtrl extends genericCtrl<Departamento> {
 
 	@Override
 	protected Entry<String, Object[]> getParams(String search) {
-		String query = "id::text like ? or nome like ? or descricao like ?";
+		String query = "cast(id as char) like ? or nome like ? or descricao like ?";
 		Object[] params = new Object[] { search, search, search };
 		return new AbstractMap.SimpleEntry<String, Object[]>(query, params);
 	}

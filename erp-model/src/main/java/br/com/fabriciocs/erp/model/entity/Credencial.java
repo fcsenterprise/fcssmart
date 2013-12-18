@@ -56,7 +56,7 @@ public class Credencial extends Model implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		GrantedAuthority ga = new SimpleGrantedAuthority("ROLE_USER");
-		List<GrantedAuthority> list = new ArrayList<>();
+		List<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
 		list.add(ga);
 		return list;
 	}

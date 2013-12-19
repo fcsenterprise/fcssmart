@@ -384,10 +384,11 @@ $app
 						}
 					};
 				});
+
 $app
 		.directive(
 				'appActions',
-				function($resource, $route) {
+				function($resource, $route, $window) {
 					return {
 						restrict : 'E',
 						template : '<div class="form-actions ">'
@@ -397,17 +398,24 @@ $app
 								+ '</div>',
 						scope : {
 							resource : '@',
-							value : '='
+							value : '=',
+							fullReload : '@'
 						},
 						link : function(scope, element, attrs) {
 							var Resource = $resource(scope.resource, {
 								paramId : '@paramId'
 							});
-
+							scope.finishEvent = function() {
+								if (scope.fullReload == 'false') {
+									$route.reload();
+								} else {
+									$window.location.reload();
+								}
+							}
 							scope.salvar = function() {
 								Resource.save(scope.value, function(data) {
 									alert("Salvo Com Sucesso");
-									$route.reload();
+									scope.finishEvent();
 								}, function(data) {
 									alert(data.data);
 								});
@@ -417,7 +425,7 @@ $app
 									'paramId' : scope.value.id
 								}, function(data) {
 									alert("Excluído Com Sucesso");
-									$route.reload();
+									scope.finishEvent();
 								}, function(data) {
 									alert(data.data);
 								});
@@ -496,7 +504,9 @@ $app
 											+ scope.$id
 											+ '" app-table app-table-columns="columns"'
 											+ 'app-table-selected="departamento" app-table-action="#/endereco/"'
-											+ 'app-table-link="/erp/endereco/'+scope.entidade+'" ></table></div></div></div>';
+											+ 'app-table-link="/erp/endereco/'
+											+ scope.entidade
+											+ '" ></table></div></div></div>';
 									scope.columns = [ {
 										'mData' : 'id',
 										'sTitle' : 'ID'

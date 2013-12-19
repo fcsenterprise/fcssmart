@@ -6,7 +6,8 @@
 				<span class="title">Empresas</span>
 			</div>
 			<div class="box-content">
-				<form class="form-horizontal fill-up validatable">
+				<form class="form-horizontal fill-up validatable" app-form-validate
+					id="empresa-form">
 					<div class="padded">
 						<div class="form-group">
 							<label class="control-label col-lg-2">CNPJ/CEI</label>
@@ -40,7 +41,8 @@
 									ng-model="empresa.inscricaoEstadual" />
 							</div>
 						</div>
-						<app-actions resource="/erp/empresa/:paramId" value="empresa"></app-actions>
+						<app-actions resource="/erp/empresa/:paramId" value="empresa"
+							form-id="#empresa-form"></app-actions>
 					</div>
 				</form>
 				<empresa-table empresa="empresa"></empresa-table>

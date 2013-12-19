@@ -3,41 +3,26 @@
 	<div class="col-md-12">
 		<div class="box">
 			<div class="box-header">
-				<span class="title">Funcion&aacute;rios</span>
+				<span class="title">Usuário</span>
 			</div>
 			<div class="box-content">
-				<div id="fun_dep" class="modal fade">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal"
-									aria-hidden="true">&times;</button>
-								<h4 class="modal-title">Departamentos</h4>
-							</div>
-							<div class="modal-body nopadding">
-								<departamento-table departamento="funcionario.departamento" />
-							</div>
-						</div>
-					</div>
-				</div>
 				<app-endereco modal-id="mmm"></app-endereco>
-				<form class="form-horizontal fill-up validatable">
+				<form class="form-horizontal fill-up validatable" app-form-validate id="user-form">
 					<div class="padded">
 						<div class="form-group">
-							<label class="control-label col-lg-2">Departamento</label>
-							<div class="col-lg-10">
-								<a modal-shower modal-id="mmm" class="btn btn-green">Departamento:
-								</a> <span class="alert alert-info"
-									ng-show="funcionario.departamento">{{funcionario.departamento.id}}
-									- {{funcionario.departamento.nome}}</span>
-
+							<label class="control-label col-lg-2">Contatos</label>
+							<div class="col-sm-2 action-nav-button">
+								<a modal-shower modal-id="mmm" title="Messages"
+									class="btn btn-green"> <i class="fa fa-address"></i> <span>Contatos</span>
+									<span class="label label-black">{{usuario.enderecos.length}}</span>
+								</a>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="control-label col-lg-2">Nome</label>
 							<div class="col-lg-10">
 								<input type="text" class="validate[required]"
-									data-prompt-position="topLeft" ng-model="funcionario.nome" />
+									data-prompt-position="topLeft" ng-model="usuario.nome" />
 							</div>
 						</div>
 						<div class="form-group">
@@ -45,7 +30,7 @@
 							<div class="col-lg-10">
 								<input type="text" class="validate[required]"
 									ui-mask="999.999.999-99" data-prompt-position="topLeft"
-									ng-model="funcionario.cpf" />
+									ng-model="usuario.cpf" />
 							</div>
 						</div>
 						<div class="form-group">
@@ -53,7 +38,7 @@
 							<div class="col-lg-4">
 								<input type="date" class="validate[required]"
 									data-prompt-position="topLeft"
-									ng-model="funcionario.dataNascimento" />
+									ng-model="usuario.dataNascimento" />
 							</div>
 						</div>
 						<div class="form-group">
@@ -61,7 +46,7 @@
 							<div class="col-lg-4">
 								<input type="email" class="validate[required]"
 									data-prompt-position="topLeft"
-									ng-model="funcionario.credencial.email" />
+									ng-model="usuario.credencial.email" />
 							</div>
 						</div>
 						<div class="form-group">
@@ -69,7 +54,7 @@
 							<div class="col-lg-4">
 								<input type="text" class="validate[required]"
 									data-prompt-position="topLeft"
-									ng-model="funcionario.credencial.login" />
+									ng-model="usuario.credencial.login" />
 							</div>
 						</div>
 						<div class="form-group">
@@ -77,14 +62,14 @@
 							<div class="col-lg-4">
 								<input type="password" class="validate[required]"
 									data-prompt-position="topLeft"
-									ng-model="funcionario.credencial.senha" />
+									ng-model="usuario.credencial.senha" />
 							</div>
 						</div>
-						<app-actions resource="/erp/funcionario/:paramId"
-							value="funcionario"></app-actions>
+						<app-actions resource="/erp/usuario/:paramId"
+							value="usuario" form-id="#user-form"></app-actions>
 					</div>
 				</form>
-				<funcionario-table funcionario="funcionario" />
+				<usuario-table usuario="usuario" />
 			</div>
 		</div>
 	</div>

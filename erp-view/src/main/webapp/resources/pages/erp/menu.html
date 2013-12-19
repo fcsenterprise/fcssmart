@@ -1,8 +1,11 @@
 <!-- find me in partials/data_tables_custom -->
 <div class="row">
 	<div class="col-md-12">
-		<div class="box-content">
-			<div class="box">
+		<div class="box">
+			<div class="box-header">
+				<span class="title">Menus</span>
+			</div>
+			<div class="box-content">
 				<div id="men_men" class="modal fade">
 					<div class="modal-dialog">
 						<div class="modal-content">
@@ -22,9 +25,8 @@
 						<div class="form-group">
 							<label class="control-label col-lg-2">Menu</label>
 							<div class="col-lg-10">
-								<a modal-shower modal-id="men_men" class="btn btn-green">Menu pai:
-								</a> <span class="alert alert-info"
-									ng-show="menu.menu">{{menu.menu.id}}
+								<a modal-shower modal-id="men_men" class="btn btn-green">Menu
+									pai: </a> <span class="alert alert-info" ng-show="menu.menu">{{menu.menu.id}}
 									- {{menu.menu.nome}}</span>
 
 							</div>
@@ -39,19 +41,18 @@
 						<div class="form-group">
 							<label class="control-label col-lg-2">URL</label>
 							<div class="col-lg-10">
-								<input type="text" class="validate[required]" data-prompt-position="topLeft"
-									ng-model="menu.url" />
+								<input type="text" class="validate[required]"
+									data-prompt-position="topLeft" ng-model="menu.url" />
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="control-label col-lg-2">&Iacute;cone</label>
 							<div class="col-lg-10">
-								<input type="text" class="validate[required]" data-prompt-position="topLeft"
-									ng-model="menu.icone" />
+								<input type="text" class="validate[required]"
+									data-prompt-position="topLeft" ng-model="menu.icone" />
 							</div>
 						</div>
-						<app-actions resource="/erp/menu/:paramId"
-							value="menu"></app-actions>
+						<app-actions resource="/erp/menu/:paramId" value="menu"></app-actions>
 					</div>
 				</form>
 				<menu-table menu="menu" />

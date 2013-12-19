@@ -69,11 +69,17 @@ $app
 							};
 							var getMenu = function(id, nome, glow, icone) {
 								return '<li class="dark-nav"> '
-										+ (glow == true? '<span class="glow"></span>':'')+'<a class="accordion-toggle" data-toggle="collapse" ng-href="#'
+										+ (glow == true ? '<span class="glow"></span>'
+												: '')
+										+ '<a class="accordion-toggle" data-toggle="collapse" ng-href="#'
 										+ id
-										+ '"> <i class="'+icone+' icon-2x icon-red"></i> <span class="ng-binding">'
+										+ '"> <i class="'
+										+ icone
+										+ ' icon-2x icon-red"></i> <span class="ng-binding">'
 										+ nome
-										+ '<i class="icon-caret-down '+(glow == true? 'icon-2x':'')+'"></i>'
+										+ '<i class="icon-caret-down '
+										+ (glow == true ? 'icon-2x' : '')
+										+ '"></i>'
 										+ '</span></a><ul id="'
 										+ id
 										+ '" class="collapse" style="height: auto;"></ul></li>';
@@ -81,8 +87,9 @@ $app
 							var getSubmenu = function(url, icone, nome) {
 								return '<li><a '
 										+ (url == null ? '' : 'ng-href="' + url
-												+ '"') + '> <i class="icon-muted pull-left' + icone
-										+ '"></i>' + nome + '</a></li>';
+												+ '"')
+										+ '> <i class="icon-muted pull-left'
+										+ icone + '"></i>' + nome + '</a></li>';
 							};
 							var i = 0;
 							var create = function(menus, element) {
@@ -92,7 +99,9 @@ $app
 											&& menu.children.length > 0) {
 										var menuId = scope.$id + (++i);
 										newEl = angular.element(getMenu(menuId,
-												menu.object.nome, menu.object.menu == null, menu.object.icone));
+												menu.object.nome,
+												menu.object.menu == null,
+												menu.object.icone));
 										element.append(newEl);
 										create(menu.children, newEl.find('#'
 												+ menuId));
@@ -452,6 +461,51 @@ $app
 									}, {
 										'mData' : 'empresa.razaoSocial',
 										'sTitle' : 'Empresa'
+									} ];
+									var currentElement = angular
+											.element(template);
+									element.replaceWith(currentElement);
+									$compile(currentElement)(scope);
+								}
+							};
+						}
+					};
+				});
+
+$app
+		.directive(
+				'enderecoTable',
+				function($compile) {
+					return {
+						restrict : 'E',
+						scope : {
+							endereco : '=',
+							columns : '=?',
+							entidade : '@?'
+						},
+						compile : function compile(tElement, tAttrs, transclude) {
+							return {
+								pre : function preLink(scope, element, attrs,
+										controller) {
+									template = '<div class="box">'
+											+ '<div class="box-header">'
+											+ '	<span class="title">Endere&ccedil;os</span>'
+											+ '</div><div class="box-content">'
+											+ '<div id="dataTable">'
+											+ '<table id="'
+											+ scope.$id
+											+ '" app-table app-table-columns="columns"'
+											+ 'app-table-selected="departamento" app-table-action="#/endereco/"'
+											+ 'app-table-link="/erp/endereco/'+scope.entidade+'" ></table></div></div></div>';
+									scope.columns = [ {
+										'mData' : 'id',
+										'sTitle' : 'ID'
+									}, {
+										'mData' : 'descricao',
+										'sTitle' : 'Descri&ccedil;&atilde;o'
+									}, {
+										'mData' : 'rua',
+										'sTitle' : 'Rua'
 									} ];
 									var currentElement = angular
 											.element(template);

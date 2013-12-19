@@ -135,13 +135,13 @@ $app
 							var getSuperMenu = function() {
 								return '<ul class="nav navbar-collapse collapse navbar-collapse-primary"> </ul>';
 							};
-							var getMenu = function(id, nome) {
+							var getMenu = function(id, nome, glow, icone) {
 								return '<li class="dark-nav"> '
-										+ '<span class="glow"></span> <a class="accordion-toggle" data-toggle="collapse" ng-href="#'
+										+ (glow == true? '<span class="glow"></span>':'')+'<a class="accordion-toggle" data-toggle="collapse" ng-href="#'
 										+ id
-										+ '"> <i class="fa fa-folder icon-2x"></i> <span class="ng-binding">'
+										+ '"> <i class="'+icone+' icon-2x icon-red"></i> <span class="ng-binding">'
 										+ nome
-										+ '<i class="icon-caret-down"></i>'
+										+ '<i class="icon-caret-down '+(glow == true? 'icon-2x':'')+'"></i>'
 										+ '</span></a><ul id="'
 										+ id
 										+ '" class="collapse" style="height: auto;"></ul></li>';
@@ -149,7 +149,7 @@ $app
 							var getSubmenu = function(url, icone, nome) {
 								return '<li><a '
 										+ (url == null ? '' : 'ng-href="' + url
-												+ '"') + '> <i class="' + icone
+												+ '"') + '> <i class="icon-muted pull-left' + icone
 										+ '"></i>' + nome + '</a></li>';
 							};
 							var i = 0;
@@ -160,7 +160,7 @@ $app
 											&& menu.children.length > 0) {
 										var menuId = scope.$id + (++i);
 										newEl = angular.element(getMenu(menuId,
-												menu.object.nome));
+												menu.object.nome, menu.object.menu == null, menu.object.icone));
 										element.append(newEl);
 										create(menu.children, newEl.find('#'
 												+ menuId));
@@ -183,7 +183,7 @@ $app
 								alert(data);
 							});
 						}
-					}
+					};
 				});
 
 $app
@@ -331,10 +331,10 @@ $app.directive('appTable', function($location, $modal) {
 	};
 });
 
-$app.directive('appModal', function() {
+$app.directive('appEndereco', function() {
 	return {
 		restrict : 'EA',
-		templateUrl : '/resources/components/modal.html',
+		templateUrl : '/resources/components/enderecoModal.html',
 		transclude : true,
 		scope : {
 			modalId : '@',

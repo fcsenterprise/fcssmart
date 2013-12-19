@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.javalite.activejdbc.LazyList;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import br.com.fabriciocs.erp.model.entity.Menu;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
-import br.com.fabriciocs.erp.model.entity.Menu;
 
 @RequestMapping("menu")
 @Controller
@@ -35,20 +34,14 @@ public class MenuCtrl extends genericCtrl<Menu> {
 
 	@RequestMapping(value = "/all", produces = { MediaType.APPLICATION_JSON_VALUE }, method = { RequestMethod.GET })
 	public @ResponseBody
-	List<Hierarquical<Menu>> getTopLevel() {
+	List<HierarquicalMenu> getTopLevel() {
 		List<Menu> menus = Menu.where("menuPai is null").orderBy("id asc");
-		return populateMenus(menus);
+		List<HierarquicalMenu> finalValue = new ArrayList<HierarquicalMenu>();
 
-	}
-
-	private List<Hierarquical<Menu>> populateMenus(List<Menu> menus) {
-		List<Hierarquical<Menu>> list = new ArrayList<Hierarquical<Menu>>();
 		for (Menu menu : menus) {
-			LazyList<Menu> subMenus = menu.getAll(Menu.class);
-			list.add(new Hierarquical<Menu>(menu, subMenus));
-			populateMenus(subMenus);
+			finalValue.add(new HierarquicalMenu(menu, menu.getAll(Menu.class)));
 		}
-		return list;
+		return finalValue;
 	}
 
 	@RequestMapping(value = "/all/{id}", produces = { MediaType.APPLICATION_JSON_VALUE }, method = { RequestMethod.GET })
@@ -59,44 +52,44 @@ public class MenuCtrl extends genericCtrl<Menu> {
 	}
 }
 
-class Hierarquical<T> {
-	T object;
-	List<Hierarquical<T>> children;
+class HierarquicalMenu {
+	Menu object;
+	List<HierarquicalMenu> children;
 
-	public Hierarquical(T object, List<T> children) {
-		super();
+	public HierarquicalMenu(Menu object, List<Menu> children) {
 		convert(object, children);
 	}
 
 	@JsonInclude(Include.NON_EMPTY)
-	public T getObject() {
+	public Menu getObject() {
 		return object;
 	}
 
-	public void setObject(T object) {
+	public void setObject(Menu object) {
 		this.object = object;
 	}
 
 	@JsonInclude(Include.NON_EMPTY)
-	public List<Hierarquical<T>> getChildren() {
+	public List<HierarquicalMenu> getChildren() {
 		return children;
 	}
 
-	public void setChildren(List<Hierarquical<T>> children) {
+	public void setChildren(List<HierarquicalMenu> children) {
 		this.children = children;
 	}
 
-	public void convert(T object, List<T> children) {
+	public HierarquicalMenu convert(Menu object, List<Menu> children) {
 		this.object = object;
 		if (children == null) {
-			return;
+			return this;
 		}
 		if (this.children == null) {
-			this.children = new ArrayList<Hierarquical<T>>();
+			this.children = new ArrayList<HierarquicalMenu>();
 		}
-		for (T t : children) {
-			this.children.add(new Hierarquical<T>(t, null));
+		for (Menu t : children) {
+			this.children.add(new HierarquicalMenu(t, t.getAll(Menu.class)));
 		}
+		return this;
 	}
 
 }

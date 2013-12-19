@@ -7121,7 +7121,7 @@ ul.icons {
 /* line 472, /home/andrei/core-admin-release/core-admin/source/stylesheets/font-awesome.scss */
 .icon-caret-down:before {
   content: "\f0d7"; }
-
+  
 /* line 473, /home/andrei/core-admin-release/core-admin/source/stylesheets/font-awesome.scss */
 .icon-caret-up:before {
   content: "\f0d8"; }
@@ -15537,4 +15537,3 @@ a.editable-click.editable-disabled {
 
 
 */
-

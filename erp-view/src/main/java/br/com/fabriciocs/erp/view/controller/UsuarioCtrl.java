@@ -6,14 +6,14 @@ import java.util.Map.Entry;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import br.com.fabriciocs.erp.model.entity.Funcionario;
+import br.com.fabriciocs.erp.model.entity.Usuario;
 
-@RequestMapping("funcionario")
+@RequestMapping("usuario")
 @Controller
-public class FuncionarioCtrl extends genericCtrl<Funcionario> {
+public class UsuarioCtrl extends genericCtrl<Usuario> {
 
-	public FuncionarioCtrl() {
-		super(Funcionario.class);
+	public UsuarioCtrl() {
+		super(Usuario.class);
 	}
 
 	@Override

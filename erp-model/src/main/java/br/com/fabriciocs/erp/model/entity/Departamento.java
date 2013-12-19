@@ -43,12 +43,12 @@ public class Departamento extends Model {
 		return parent(Empresa.class);
 	}
 
-	public void addFuncionario(Funcionario funcionario) {
+	public void addFuncionario(Usuario funcionario) {
 		add(funcionario);
 	}
 
 	@JsonIgnore
-	public List<Funcionario> getFuncionarios() {
-		return getAll(Funcionario.class);
+	public List<Usuario> getFuncionarios() {
+		return getAll(Usuario.class);
 	}
 }

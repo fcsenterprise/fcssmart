@@ -1,6 +1,7 @@
 package br.com.fabriciocs.erp.model.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.annotations.BelongsTo;
@@ -11,12 +12,10 @@ import org.springframework.stereotype.Repository;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Repository
-@BelongsToParents(value = {
-		@BelongsTo(parent = Departamento.class, foreignKeyName = "departamento"),
-		@BelongsTo(parent = Credencial.class, foreignKeyName = "credencial") })
-@Table("Funcionarios")
+@BelongsToParents(value = { @BelongsTo(parent = Credencial.class, foreignKeyName = "credencial") })
+@Table("Usuarios")
 @JsonIgnoreProperties({ "frozen", "valid", "idName", "longId", "new" })
-public class Funcionario extends Model {
+public class Usuario extends Model {
 	public Integer getId() {
 		return getInteger(getIdName());
 	}
@@ -45,12 +44,12 @@ public class Funcionario extends Model {
 		return getDate("dataNascimento");
 	}
 
-	public void setDepartamento(Departamento departamento) {
-		setParent(departamento);
+	public List<Endereco> getEnderecos() {
+		return getAll(Endereco.class);
 	}
 
-	public Departamento getDepartamento() {
-		return parent(Departamento.class);
+	public void addEndereco(Endereco endereco) {
+		add(endereco);
 	}
 
 	public void setCredencial(Credencial credencial) {

@@ -42,82 +42,14 @@ $app.run(function($rootScope, $resource, $timeout) {
 	};
 });
 function EmpresaCtrl($scope, $resource, $location, $route) {
-	var Empresa = $resource("/erp/empresa/:paramId", {
-		paramId : '@paramId'
-	});
-
-	$scope.$root.breadCumbs = [ {
-		name : 'Cadastros Basicos',
-		icon : 'fa fa-book'
-	}, {
-		name : 'Empresa',
-		icon : 'fa fa-building-o'
-	} ];
-
-	$scope.salvar = function() {
-		Empresa.save($scope.empresa, function(data) {
-			alert("Salvo Com Sucesso");
-			$route.reload();
-		}, function(data) {
-			alert(data.data);
-		});
-	};
-	$scope.excluir = function() {
-		Empresa.remove({
-			'paramId' : $scope.empresa.id
-		}, function(data) {
-			$location.path("/empresa");
-		});
-	};
-
 }
 function DepartamentoCtrl($scope, $filter, $routeParams, $resource, $location,
 		$route) {
-	var Departamento = $resource("/erp/departamento/:paramId", {
-		paramId : '@paramId'
-	});
-
-	$scope.$root.breadCumbs = [ {
-		name : 'Cadastros Basicos',
-		icon : 'fa fa-book'
-	}, {
-		name : 'Departamento',
-		icon : 'fa fa-group'
-	} ];
-	$scope.salvar = function() {
-
-		Departamento.save($scope.departamento, function(data) {
-			$location.path("/departamentos");
-		});
-	};
-	var nome = $routeParams.nome;
-	$scope.excluir = function() {
-		Departamento.remove({
-			paramId : $scope.departamento.id
-		}, function(data) {
-			$location.path("/departamentos");
-		});
-	};
 }
 function FuncionarioCtrl($scope) {
-	$scope.$root.breadCumbs = [ {
-		name : 'Cadastros Basicos',
-		icon : 'fa fa-book'
-	}, {
-		name : 'Funcionario',
-		icon : 'fa fa-user'
-	} ];
 }
 
 function MenuCtrl($scope, $resource) {
-	$scope.$root.breadCumbs = [ {
-		name : 'Cadastros Basicos',
-		icon : 'fa fa-book'
-	}, {
-		name : 'Menus',
-		icon : 'fa fa-list-ul'
-	} ];
-
 }
 $app
 		.directive(

@@ -102,25 +102,25 @@
 							<i class="{{page.icon}}"></i> {{page.title}}
 						</h3>
 						<h5>
-							<span> {{page.subTitle}} </span>
+							<span> </span>
 						</h5>
 					</div>
 				</div>
-				<div class="container padded" ng-show="config.logado">
-					<div class="row">
-						<div id="breadcrumbs">
-							<div class="breadcrumb-button blue">
-								<span class="breadcrumb-label"><i class="icon-home"></i>
-									Home</span> <span class="breadcrumb-arrow"><span></span></span>
-							</div>
-							<div class="breadcrumb-button" ng-repeat="page in breadCumbs">
-								<span class="breadcrumb-label"><i ng-class="page.icon"></i>
-									{{page.name}}</span> <span class="breadcrumb-arrow"><span></span></span>
-							</div>
+<!-- 				<div class="container padded" ng-show="config.logado"> -->
+<!-- 					<div class="row"> -->
+<!-- 						<div id="breadcrumbs"> -->
+<!-- 							<div class="breadcrumb-button blue"> -->
+<!-- 								<span class="breadcrumb-label"><i class="icon-home"></i> -->
+<!-- 									Home</span> <span class="breadcrumb-arrow"><span></span></span> -->
+<!-- 							</div> -->
+<!-- 							<div class="breadcrumb-button" ng-repeat="page in breadCumbs"> -->
+<!-- 								<span class="breadcrumb-label"><i ng-class="page.icon"></i> -->
+<!-- 									{{page.name}}</span> <span class="breadcrumb-arrow"><span></span></span> -->
+<!-- 							</div> -->
 
-						</div>
-					</div>
-				</div>
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
 				<div class="container" ng-view></div>
 			</div>
 		</div>

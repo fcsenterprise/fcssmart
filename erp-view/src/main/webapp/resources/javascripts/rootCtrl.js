@@ -8,9 +8,9 @@ $app.config(function($routeProvider, $httpProvider) {
 	}).when('/departamento', {
 		controller : 'DepartamentoCtrl',
 		templateUrl : 'departamento.html'
-	}).when('/funcionario', {
-		controller : 'FuncionarioCtrl',
-		templateUrl : 'funcionario.html'
+	}).when('/usuario', {
+		controller : 'UsuarioCtrl',
+		templateUrl : 'usuario.html'
 	}).when('/menu', {
 		controller : 'MenuCtrl',
 		templateUrl : 'menu.html'
@@ -19,6 +19,9 @@ $app.config(function($routeProvider, $httpProvider) {
 	});
 });
 $app.run(function($rootScope, $resource, $timeout) {
+	angular.element("form.validatable").validationEngine({
+		promptPosition : "topLeft"
+	});
 	$rootScope.config = {
 		appName : "AngularJS",
 		logado : true,
@@ -42,14 +45,34 @@ $app.run(function($rootScope, $resource, $timeout) {
 	};
 });
 function EmpresaCtrl($scope, $resource, $location, $route) {
+	$scope.$root.page = {
+		title : "Empresas",
+		subTitle : "Cadastro de Empresas",
+		icon : "fa fa-building-o"
+	};
 }
 function DepartamentoCtrl($scope, $filter, $routeParams, $resource, $location,
 		$route) {
+	$scope.$root.page = {
+		title : "Departamentos",
+		subTitle : "Cadastro de Departamentos",
+		icon : "fa fa-group"
+	};
 }
-function FuncionarioCtrl($scope) {
+function UsuarioCtrl($scope) {
+	$scope.$root.page = {
+		title : "Usuários",
+		subTitle : "Cadastro de Usuários",
+		icon : "fa fa-user"
+	};
 }
 
 function MenuCtrl($scope, $resource) {
+	$scope.$root.page = {
+		title : "Menus",
+		subTitle : "Cadastro de Menus",
+		icon : "fa fa-th-list"
+	};
 }
 $app
 		.directive(
@@ -179,12 +202,12 @@ $app
 				});
 $app
 		.directive(
-				'funcionarioTable',
+				'usuarioTable',
 				function($compile) {
 					return {
 						restrict : 'E',
 						scope : {
-							funcionario : '=',
+							usuario : '=',
 							columns : '=?',
 						},
 						compile : function compile(tElement, tAttrs, transclude) {
@@ -193,14 +216,14 @@ $app
 										controller) {
 									template = '<div class="box">'
 											+ '<div class="box-header">'
-											+ '	<span class="title">Funcionarios</span>'
+											+ '	<span class="title">Usu&aacute;rios</span>'
 											+ '</div><div class="box-content">'
 											+ '<div id="dataTable">'
 											+ '<table id="'
 											+ scope.$id
 											+ '" app-table app-table-columns="columns"'
-											+ 'app-table-selected="funcionario" app-table-action="#/funcionario/"'
-											+ 'app-table-link="/erp/funcionario"></table></div></div></div>';
+											+ 'app-table-selected="funcionario" app-table-action="#/usuario/"'
+											+ 'app-table-link="/erp/usuario"></table></div></div></div>';
 									scope.columns = [ {
 										'mData' : 'id',
 										'sTitle' : 'ID'
@@ -353,37 +376,17 @@ $app
 						}
 					};
 				});
-$app
-		.directive(
-				'appFormGroup',
-				function() {
-					return {
-						restrict : 'E',
-						replace : true,
-						compile : function() {
-						},
-						scope : {
-							label : '@',
-							type : '@?',
-							class : '=?',
-							dataPromptPosition : '@?',
-							uiMask : '@?',
-							value : '='
-						},
-						template : '<div class="form-group">'
-								+ '<label class="control-label col-lg-2">{{label}}</label>'
-								+ '<div class="col-lg-10">'
-								+ '<input type="{{type || "text"}}" ng-class="class"'
-								+ ' data-prompt-position="{{dataPromptPosition || "topLeft"}}" ui-mask="{{uiMask || "*" }}"'
-								+ ' ng-model="value" /></div></div>',
-						link : function(scope, element, attrs) {
-							scope.$watch('value', function(newValue) {
-								scope.value = newValue;
-								scope.$apply();
-							});
-						}
-					};
-				});
+$app.directive('appFormValidate', function() {
+	return {
+		restrict : 'A',
+		require : '^form',
+		link : function(scope, element, attrs) {
+			angular.element(element).validationEngine({
+				promptPosition : "topLeft"
+			});
+		}
+	};
+});
 
 $app
 		.directive(
@@ -399,26 +402,34 @@ $app
 						scope : {
 							resource : '@',
 							value : '=',
-							fullReload : '@'
+							fullReload : '@',
+							formId : '@'
 						},
 						link : function(scope, element, attrs) {
 							var Resource = $resource(scope.resource, {
 								paramId : '@paramId'
 							});
+
+							scope.isValid = function() {
+								return angular.element(scope.formId)
+										.validationEngine('validate');
+							};
 							scope.finishEvent = function() {
 								if (scope.fullReload == 'false') {
 									$route.reload();
 								} else {
 									$window.location.reload();
 								}
-							}
+							};
 							scope.salvar = function() {
-								Resource.save(scope.value, function(data) {
-									alert("Salvo Com Sucesso");
-									scope.finishEvent();
-								}, function(data) {
-									alert(data.data);
-								});
+								if (scope.isValid()) {
+									Resource.save(scope.value, function(data) {
+										alert("Salvo Com Sucesso");
+										scope.finishEvent();
+									}, function(data) {
+										alert(data.data);
+									});
+								}
 							};
 							scope.excluir = function() {
 								Resource.remove({

@@ -53,6 +53,14 @@ public class Empresa extends Model {
 		}
 		setParent(telefone);
 	}
+	
+	public void setCodigoIbge(String codigoIbge){
+		setString("codigoIbge", codigoIbge);
+	}
+	
+	public String getCodigoIbge(){
+		return getString("codigoIbge");
+	}
 
 	public Telefone getTelefone() {
 		return parent(Telefone.class);

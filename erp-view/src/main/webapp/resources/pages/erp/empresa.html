@@ -6,21 +6,19 @@
 				<ul class="nav nav-tabs nav-tabs-left">
 					<li class="active"><a href="#basico" data-toggle="tab"><i
 							class="icon- fa fa-book"></i><span>B&aacute;sico</span></a></li>
-					<li><a href="#basico" data-toggle="tab"><i
+					<li><a href="#endereco" data-toggle="tab"><i
 							class="icon-home"></i><span>Endere&ccedil;o</span></a></li>
-					<li><a href="#basico" data-toggle="tab"><i
+					<li><a href="#telefone" data-toggle="tab"><i
 							class="icon- fa fa-phone"></i><span>Telefone</span></a></li>
-					<li><a href="#complementar" data-toggle="tab"><i
-							class="icon-comments-alt"></i> <span>Complementar</span></a></li>
 				</ul>
 			</div>
 
-			<div class="box-content padded">
-				<div class="tab-content">
-					<div class="tab-pane active" id="basico">
-						<div class="box-content">
-							<form class="form-horizontal fill-up validatable"
-								app-form-validate id="empresa-form">
+			<form class="form-horizontal fill-up validatable" app-form-validate
+				id="empresa-form">
+				<div class="box-content padded">
+					<div class="tab-content">
+						<div class="tab-pane active" id="basico">
+							<div class="box-content">
 								<div class="row">
 									<div class="col-lg-6">
 										<ul class="padded separate-sections">
@@ -28,49 +26,115 @@
 												type="text" ui-mask="999"
 												class="validate[required,maxSize[3],number]"
 												data-prompt-position="topLeft" ng-model="empresa.codigo" /></li>
-											<li class="input"><label>Raz&atilde;o Social</label><input
-												type="text" class="validate[required]"
-												data-prompt-position="topLeft"
-												ng-model="empresa.razaoSocial" /></li>
 											<li class="input"><label>CNPJ</label><input type="text"
 												ui-mask="999999999999/99"
 												class="validate[required,minSize[14],number]"
 												data-prompt-position="topLeft" ng-model="empresa.cnpj" /></li>
-											<li class="input"><label>Cei</label><input type="text"
-												class="validate[required,minSize[14],number]"
-												data-prompt-position="topLeft" ng-model="empresa.cei" /></li>
+											<li class="input"><label>Nome Fantasia</label><input
+												type="text" class="validate[required, minSize[3]]"
+												data-prompt-position="topLeft"
+												ng-model="empresa.nomeFantasia" /></li>
+											<li class="input"><label>Raz&atilde;o Social</label><input
+												type="text" class="validate[required]"
+												data-prompt-position="topLeft"
+												ng-model="empresa.razaoSocial" /></li>
+
 										</ul>
 									</div>
 									<div class="col-lg-6">
 										<ul class="padded separate-sections">
-											<li class="input"><label>C&oacute;digo Nire</label><input
-												type="text" ui-mask="99999"
-												class="validate[required,maxSize[5],number]"
-												data-prompt-position="topLeft" ng-model="empresa.codigoNire" /></li>
-											<li class="input"><label>Inscri&ccedil;&atilde;o
-													Municipal</label><input type="text"
-												class="validate[required,maxSize[3],number]"
-												data-prompt-position="topLeft"
-												ng-model="empresa.inscricaoMunicipal" /></li>
+
 											<li class="input"><label>Inscri&ccedil;&atilde;o
 													Estadual</label><input type="text"
-												class="validate[required,maxSize[3],number]"
+												class="validate[required,number]"
 												data-prompt-position="topLeft"
 												ng-model="empresa.inscricaoEstadual" /></li>
-											<li class="input"><label>Tipo Empresa</label> <select>
-													<option>Matriz!</option>
-													<option id="greet" ng-selected="selected">Greetings!</option>
-											</select></li>
+											<li class="input"><label>Inscri&ccedil;&atilde;o
+													Municipal</label><input type="text"
+												class="validate[required,number]"
+												data-prompt-position="topLeft"
+												ng-model="empresa.inscricaoMunicipal" /></li>
+											<li class="input"><label>C&oacute;digo Nire</label><input
+												type="text" class="validate[required,number]"
+												data-prompt-position="topLeft" ng-model="empresa.codigoNire" /></li>
 										</ul>
 									</div>
 								</div>
-							</form>
+							</div>
+						</div>
+						<div class="tab-pane" id="endereco">
+							<div class="box-content">
+								<div class="row">
+									<div class="col-lg-6">
+										<ul class="padded separate-sections">
+											<li class="input"><label>ID</label><input type="text"
+												ng-disabled="true" ng-model="empresa.endereco.id" /></li>
+											<li class="input"><label>Descri&ccedil;&atilde;o</label><input
+												type="text" ng-model="empresa.endereco.descricao" /></li>
+											<li class="input"><label>CEP</label><input type="text"
+												class="validate[required,minSize[8],number]"
+												ui-mask="99.999-999" data-prompt-position="topLeft"
+												ng-model="empresa.endereco.cep" /></li>
+											<li class="input"><label>Rua</label><input type="text"
+												class="validate[required]" data-prompt-position="topLeft"
+												ng-model="empresa.endereco.rua" /></li>
+											<li class="input"><label>N&uacute;mero</label><input
+												type="text" class="validate[required]"
+												data-prompt-position="topLeft"
+												ng-model="empresa.endereco.numero" /></li>
+										</ul>
+									</div>
+									<div class="col-lg-6">
+										<ul class="padded separate-sections">
+											<li class="input"><label>complemento</label><input
+												type="text" ng-model="empresa.endereco.complemento" /></li>
+											<li class="input"><label>Bairro</label><input
+												type="text" ng-model="empresa.endereco.bairro"
+												class="validate[required]" /></li>
+											<li class="input"><label>Cidade</label><input
+												type="text" class="validate[required]"
+												data-prompt-position="topLeft"
+												ng-model="empresa.endereco.cidade" /></li>
+											<li class="input"><label>Estado</label><input
+												type="text" class="validate[required]"
+												data-prompt-position="topLeft"
+												ng-model="empresa.endereco.estado" /></li>
+											<li class="input"><label>Refer&ecirc;ncia</label><input
+												type="text" data-prompt-position="topLeft"
+												ng-model="empresa.endereco.referencia" /></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane" id="telefone">
+							<div class="box-content">
+								<div class="row">
+									<div class="col-lg-6">
+										<ul class="padded separate-sections">
+											<li class="input"><label>ID</label><input type="text"
+												ng-disabled="true" ng-model="empresa.telefone.id" /></li>
+											<li class="input"><label>Descri&ccedil;&atilde;o</label><input
+												type="text" ng-model="empresa.telefone.descricao" /></li>
+											<li class="input"><label>DDD</label><input type="text"
+												class="validate[required,minSize[3],maxSize[3],number]"
+												ui-mask="999" data-prompt-position="topLeft"
+												ng-model="empresa.telefone.ddd" /></li>
+											<li class="input"><label>N&uacute;mero</label><input
+												type="text" class="validate[required, minSize[9]]"
+												data-prompt-position="topLeft"
+												ng-model="empresa.telefone.numero" /></li>
+										</ul>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
-					<div class="tab-pane" id="complementar">And now to the
-						profile</div>
 				</div>
-			</div>
+			</form>
+			<app-actions resource="/erp/empresa/:paramId" value="empresa"
+				form-id="empresa-form"></app-actions>
+			<empresa-table empresa="empresa" />
 		</div>
 	</div>
 </div>

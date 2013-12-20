@@ -2,3 +2,4 @@ erp-view/.settings/
 erp-parent/.settings/org.eclipse.core.resources.prefs
 erp-model/.settings/
 erp-infra/.settings/org.eclipse.jdt.core.prefs
+erp-parent/artifact/erp.ldb

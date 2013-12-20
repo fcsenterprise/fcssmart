@@ -46922,7 +46922,7 @@ $(document).ready(function() {
                 },
                 "maxSize": {
                     "regex": "none",
-                    "alertText": "* M&acute;ximo ",
+                    "alertText": "* M&aacute;ximo ",
                     "alertText2": " caracteres permitidos"
                 },
                 "groupRequired": {

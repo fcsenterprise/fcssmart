@@ -352,8 +352,8 @@ $app
 												'sTitle' : 'ID'
 											},
 											{
-												'mData' : 'cnpjCei',
-												'sTitle' : 'CNPJ/CEI'
+												'mData' : 'cnpj',
+												'sTitle' : 'CNPJ'
 											},
 											{
 												'mData' : 'razaoSocial',
@@ -366,7 +366,7 @@ $app
 											{
 												'mData' : 'inscricaoEstadual',
 												'sTitle' : 'Inscri&ccedil;&atilde;o Estadual'
-											} ];
+											}];
 									var currentElement = angular
 											.element(template);
 									element.replaceWith(currentElement);
@@ -382,7 +382,14 @@ $app.directive('appFormValidate', function() {
 		require : '^form',
 		link : function(scope, element, attrs) {
 			angular.element(element).validationEngine({
+				validateNonVisibleFields : true,
+				updatePromptsPosition : true,
+				focusFirstField : true,
+				scroll : false,
 				promptPosition : "topLeft"
+			});
+			$('a[data-toggle="tab"]').on('click', function() {
+				angular.element(element).validationEngine('hideAll');
 			});
 		}
 	};
@@ -395,7 +402,7 @@ $app
 					return {
 						restrict : 'E',
 						template : '<div class="form-actions ">'
-								+ '<button type="button" class="btn btn-blue" ng-click="salvar()">Salvar</button>'
+								+ '<button type="button" id="btnSalvar{{$id}}" class="btn btn-blue" ng-click="salvar()">Salvar</button>'
 								+ '<button type="button" class="btn btn-blue" ng-show="value && value.id" ng-click="excluir()">Excluir</button>'
 								+ '<button type="button" class="btn btn-blue" ng-click="value = {}">Limpar</button>'
 								+ '</div>',
@@ -411,8 +418,12 @@ $app
 							});
 
 							scope.isValid = function() {
-								return angular.element(scope.formId)
-										.validationEngine('validate');
+								var el = angular.element('#' + scope.formId);
+								var ret = el.validationEngine('validate');
+								if(!ret){
+									$('#btnSalvar'+scope.$id+'').validationEngine('showPrompt', 'Existem erros não tratados verifique as outras abas', 'load');
+								}
+								return ret;
 							};
 							scope.finishEvent = function() {
 								if (scope.fullReload == 'false') {

@@ -20,7 +20,7 @@ public class EmpresaCtrl extends genericCtrl<Empresa> {
 
 	@Override
 	protected Entry<String, Object[]> getParams(String search) {
-		String query = "cast(id as char) like ? or cnpjCei like ? or razaoSocial like ? or nomeFantasia like ? or inscricaoEstadual like ?";
+		String query = "cast(id as char) like ? or cnpj like ? or razaoSocial like ? or nomeFantasia like ? or inscricaoEstadual like ?";
 		Object[] params = new Object[] { search, search, search, search, search };
 		return new AbstractMap.SimpleEntry<String, Object[]>(query, params);
 	}

@@ -3,6 +3,8 @@ package br.com.fabriciocs.erp.model.entity;
 import java.util.List;
 
 import org.javalite.activejdbc.Model;
+import org.javalite.activejdbc.annotations.BelongsTo;
+import org.javalite.activejdbc.annotations.BelongsToParents;
 import org.javalite.activejdbc.annotations.Table;
 import org.springframework.stereotype.Repository;
 
@@ -10,6 +12,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Table("Empresas")
+@BelongsToParents({
+		@BelongsTo(parent = Telefone.class, foreignKeyName = "telefone"),
+		@BelongsTo(parent = Endereco.class, foreignKeyName = "endereco") })
 @Repository
 @JsonIgnoreProperties({ "frozen", "valid", "idName", "longId", "new" })
 public class Empresa extends Model {
@@ -18,12 +23,12 @@ public class Empresa extends Model {
 		return getInteger(getIdName());
 	}
 
-	public String getCnpjCei() {
-		return getString("cnpjCei");
+	public String getCnpj() {
+		return getString("cnpj");
 	}
 
-	public void setCnpjCei(String cnpjCei) {
-		setString("cnpjCei", cnpjCei);
+	public void setCnpj(String cnpj) {
+		setString("cnpj", cnpj);
 	}
 
 	public String getRazaoSocial() {
@@ -42,6 +47,28 @@ public class Empresa extends Model {
 		setString("nomeFantasia", nomeFantasia);
 	}
 
+	public void setTelefone(Telefone telefone) {
+		if (telefone.isFrozen() || telefone.getId() == null) {
+			telefone.save();
+		}
+		setParent(telefone);
+	}
+
+	public Telefone getTelefone() {
+		return parent(Telefone.class);
+	}
+
+	public Endereco getEndereco() {
+		return parent(Endereco.class);
+	}
+
+	public void setEndereco(Endereco endereco) {
+		if (endereco.isFrozen() || endereco.getId() == null) {
+			endereco.save();
+		}
+		setParent(endereco);
+	}
+
 	public String getInscricaoEstadual() {
 		return getString("inscricaoEstadual");
 	}
@@ -50,8 +77,32 @@ public class Empresa extends Model {
 		setString("inscricaoEstadual", inscricaoEstadual);
 	}
 
+	public void setInscricaoMunicipal(String inscricaoMunicipal) {
+		setString("inscricaoMunicipal", inscricaoMunicipal);
+	}
+
+	public String getInscricaoMunicipal() {
+		return getString("inscricaoMunicipal");
+	}
+
 	public void addDepartamento(Departamento departamento) {
 		add(departamento);
+	}
+
+	public void setCodigo(Integer codigo) {
+		setInteger("codigo", codigo);
+	}
+
+	public Integer getCodigo() {
+		return getInteger("codigo");
+	}
+
+	public void setCodigoNire(String codigoNire) {
+		setString("codigoNire", codigoNire);
+	}
+
+	public String getCodigoNire() {
+		return getString("codigoNire");
 	}
 
 	@JsonIgnore

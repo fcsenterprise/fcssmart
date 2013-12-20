@@ -109,5 +109,12 @@ public class Empresa extends Model {
 	public List<Departamento> getDepartamentos() {
 		return getAll(Departamento.class);
 	}
+	
+	@Override
+	public boolean delete() {
+		parent(Endereco.class).delete();
+		parent(Telefone.class).delete();
+		return super.delete();
+	}
 
 }

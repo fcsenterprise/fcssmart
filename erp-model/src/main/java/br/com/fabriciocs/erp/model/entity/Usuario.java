@@ -1,7 +1,6 @@
 package br.com.fabriciocs.erp.model.entity;
 
 import java.util.Date;
-import java.util.List;
 
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.annotations.BelongsTo;
@@ -16,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Table("Usuarios")
 @JsonIgnoreProperties({ "frozen", "valid", "idName", "longId", "new" })
 public class Usuario extends Model {
+
 	public Integer getId() {
 		return getInteger(getIdName());
 	}
@@ -36,20 +36,12 @@ public class Usuario extends Model {
 		return getString("cpf");
 	}
 
-	public void setDataNascimento(Date dataNascimento) {
-		setDate("dataNascimento", dataNascimento);
+	public void setDataExpiracao(Date dataExpiracao) {
+		setDate("dataExpiracao", dataExpiracao);
 	}
 
-	public Date getDataNascimento() {
-		return getDate("dataNascimento");
-	}
-
-	public List<Endereco> getEnderecos() {
-		return getAll(Endereco.class);
-	}
-
-	public void addEndereco(Endereco endereco) {
-		add(endereco);
+	public Date getDataExpiracao() {
+		return getDate("dataExpiracao");
 	}
 
 	public void setCredencial(Credencial credencial) {

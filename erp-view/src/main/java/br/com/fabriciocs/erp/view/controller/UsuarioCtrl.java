@@ -18,7 +18,7 @@ public class UsuarioCtrl extends genericCtrl<Usuario> {
 
 	@Override
 	protected Entry<String, Object[]> getParams(String search) {
-		String query = "cast(id as char) like ? or nome like ? or cpf like ? or cast(dataNascimento as char) like ?";
+		String query = "cast(id as char) like ? or nome like ? or cpf like ? or cast(dataExpiracao as char) like ?";
 		Object[] params = new Object[] { search, search, search, search };
 		return new AbstractMap.SimpleEntry<String, Object[]>(query, params);
 	}

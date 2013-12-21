@@ -11,6 +11,9 @@ $app.config(function($routeProvider, $httpProvider) {
 	}).when('/usuario', {
 		controller : 'UsuarioCtrl',
 		templateUrl : 'usuario.html'
+	}).when('/email', {
+		controller : 'EmailCtrl',
+		templateUrl : 'email.html'
 	}).when('/menu', {
 		controller : 'MenuCtrl',
 		templateUrl : 'menu.html'
@@ -64,6 +67,11 @@ function UsuarioCtrl($scope) {
 		title : "Usuários",
 		subTitle : "Cadastro de Usuários",
 		icon : "fa fa-user"
+	};
+}
+
+function EmailCtrl($scope) {
+	$scope.email = { config : {}
 	};
 }
 
@@ -222,7 +230,7 @@ $app
 											+ '<table id="'
 											+ scope.$id
 											+ '" app-table app-table-columns="columns"'
-											+ 'app-table-selected="funcionario" app-table-action="#/usuario/"'
+											+ 'app-table-selected="usuario" app-table-action="#/usuario/"'
 											+ 'app-table-link="/erp/usuario"></table></div></div></div>';
 									scope.columns = [ {
 										'mData' : 'id',
@@ -233,9 +241,6 @@ $app
 									}, {
 										'mData' : 'cpf',
 										'sTitle' : 'cpf'
-									}, {
-										'mData' : 'dataNascimento',
-										'sTitle' : 'Data Nascimento'
 									}, {
 										'mData' : 'credencial.login',
 										'sTitle' : 'Login'
@@ -366,7 +371,7 @@ $app
 											{
 												'mData' : 'inscricaoEstadual',
 												'sTitle' : 'Inscri&ccedil;&atilde;o Estadual'
-											}];
+											} ];
 									var currentElement = angular
 											.element(template);
 									element.replaceWith(currentElement);
@@ -420,8 +425,12 @@ $app
 							scope.isValid = function() {
 								var el = angular.element('#' + scope.formId);
 								var ret = el.validationEngine('validate');
-								if(!ret){
-									$('#btnSalvar'+scope.$id+'').validationEngine('showPrompt', 'Existem erros não tratados verifique as outras abas', 'load');
+								if (!ret) {
+									$('#btnSalvar' + scope.$id + '')
+											.validationEngine(
+													'showPrompt',
+													'Existem erros não tratados verifique as outras abas',
+													'load');
 								}
 								return ret;
 							};

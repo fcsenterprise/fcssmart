@@ -23,7 +23,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 		"credentialsNonExpired" })
 public class Credencial extends Model implements UserDetails {
 
-	public Credencial() {
+	public transient String confirmacaoSenha;
+
+	public String getConfirmacaoSenha() {
+		return confirmacaoSenha;
+	}
+
+	public void setConfirmacaoSenha(String confirmacaoSenha) {
+		this.confirmacaoSenha = confirmacaoSenha;
 	}
 
 	public String getLogin() {

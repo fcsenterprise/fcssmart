@@ -53,12 +53,12 @@ public class Empresa extends Model {
 		}
 		setParent(telefone);
 	}
-	
-	public void setCodigoIbge(String codigoIbge){
+
+	public void setCodigoIbge(String codigoIbge) {
 		setString("codigoIbge", codigoIbge);
 	}
-	
-	public String getCodigoIbge(){
+
+	public String getCodigoIbge() {
 		return getString("codigoIbge");
 	}
 
@@ -111,6 +111,11 @@ public class Empresa extends Model {
 
 	public String getCodigoNire() {
 		return getString("codigoNire");
+	}
+
+	@JsonIgnore
+	public List<ParametroGlobal> getParametrosGlobais() {
+		return getAll(ParametroGlobal.class);
 	}
 
 	@JsonIgnore

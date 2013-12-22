@@ -12,20 +12,6 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
-	<!-- <bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource" -->
-	<!-- destroy-method="close"> -->
-	<!-- <property name="driverClass" value="com.mysql.jdbc.Driver" /> -->
-	<!-- <property name="jdbcUrl" value="jdbc:mysql://127.2.208.130:3306/bestsmart"/> -->
-	<!-- <property name="username" value="adminpBasrrC" /> -->
-	<!-- <property name="password" value="KBvRIrpLwfT8" /> -->
-	<!-- </bean> -->
-	<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource"
-		destroy-method="close">
-		<property name="driverClass" value="com.mysql.jdbc.Driver" />
-		<property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/erp" />
-		<property name="username" value="root" />
-		<property name="password" value="root" />
-=======
 	<!--<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource"
 		destroy-method="close">
 		<property name="driverClass" value="com.mysql.jdbc.Driver" />
@@ -39,7 +25,6 @@
  		<property name="jdbcUrl" value="jdbc:mysql://127.2.208.130:3306/bestsmart"/> 
  		<property name="username" value="adminpBasrrC" /> 
  		<property name="password" value="KBvRIrpLwfT8" /> 
->>>>>>> comitando correções no projeto.
 	</bean>
 	<bean id="txManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">

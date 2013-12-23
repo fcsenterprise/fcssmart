@@ -9,6 +9,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.aspectj.weaver.bcel.AtAjAttributes;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -24,7 +25,7 @@ public class EmailService {
 	@Autowired
 	private JavaMailSenderImpl mailSender;
 
-	void preparar(Map<String, String> config) {
+	public EmailService preparar(Map<String, String> config) {
 		mailSender.setDefaultEncoding(config.get("servidor.email.encoding"));
 		mailSender.setHost(config.get("servidor.email.host"));
 		mailSender.setPassword(config.get("servidor.email.senha"));
@@ -38,6 +39,7 @@ public class EmailService {
 		prop.put("mail.smtp.starttls.enable", Boolean.parseBoolean(config
 				.get("servidor.email.smtp.starttls.enable")));
 		mailSender.setJavaMailProperties(prop);
+		return this;
 	}
 
 	public InternetAddress[] getAddresses(String[] to) throws AddressException {
@@ -57,7 +59,9 @@ public class EmailService {
 			helper.setFrom(new InternetAddress(from));
 			helper.setSubject(assunto);
 			helper.setText(msg, true);
-			helper.addAttachment(attach.getName(), attach);
+			if (attach != null) {
+				helper.addAttachment(attach.getName(), attach);
+			}
 		} catch (AddressException e) {
 			throw new RuntimeException(e);
 		} catch (MessagingException e) {

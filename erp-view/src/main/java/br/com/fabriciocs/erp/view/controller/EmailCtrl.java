@@ -2,7 +2,6 @@ package br.com.fabriciocs.erp.view.controller;
 
 import java.util.Map;
 
-import org.javalite.activejdbc.Model;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,7 +29,7 @@ public class EmailCtrl {
 	public @ResponseBody
 	String saveConfig(@RequestBody Email email) {
 		log.info(email.toString());
-		Empresa empresa = Empresa.findFirst("*");
+		Empresa empresa = Empresa.findFirst(" true ");
 
 		for (Map.Entry<String, String> pair : email.config.entrySet()) {
 			pg.setId(pair.getKey());

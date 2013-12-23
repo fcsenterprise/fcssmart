@@ -14,23 +14,20 @@
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
 		<async-supported>true</async-supported>
-		<init-param>
-		<param-name>targetBeanName</param-name>
-		<param-value>openTransactionInView</param-value>
-		</init-param>
+	<!-- 	<init-param>
+			<param-name>targetBeanName</param-name>
+			<param-value>openTransactionInView</param-value>
+		</init-param> -->
 	</filter>
+<!-- 	<filter> -->
+<!-- 		<filter-name>springSecurityFilterChain</filter-name> -->
+<!-- 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class> -->
+<!-- 	</filter> -->
 	<filter-mapping>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-<!-- 	<filter> -->
-<!-- 		<filter-name>openTransactionInView</filter-name> -->
-<!-- 		<filter-class>br.com.fabriciocs.erp.view.config.web.filter.OpenTransactionInView</filter-class> -->
-<!-- 	</filter> -->
-<!-- 	<filter-mapping> -->
-<!-- 		<filter-name>openTransactionInView</filter-name> -->
-<!-- 		<url-pattern>/*</url-pattern> -->
-<!-- 	</filter-mapping> -->
+
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>

@@ -1,1 +1,1 @@
-<%response.sendRedirect("resources/pages/erp/index.html"); %>
+<%response.sendRedirect("loginForm.html"); %>

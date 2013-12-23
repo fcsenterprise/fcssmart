@@ -12,6 +12,11 @@
 	<name>ERP Infra</name>
 	<description>Infraestructure project</description>
 	<dependencies>
-		
+
+	<dependency>
+		<groupId>br.com.fabriciocs.erp.model</groupId>
+		<artifactId>erp-model</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</dependency>
 	</dependencies>
 </project>

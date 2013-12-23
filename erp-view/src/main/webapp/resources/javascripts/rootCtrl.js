@@ -2,7 +2,10 @@ $app = angular.module('rootCtrl', [ 'ngResource', 'ui.mask',
 		'$strap.directives' ]);
 
 $app.config(function($routeProvider, $httpProvider) {
-	$routeProvider.when('/empresa', {
+	$routeProvider.when('/', {
+		controller : 'IndexCtrl',
+		templateUrl : 'institucional.html'
+	}).when('/empresa', {
 		controller : 'EmpresaCtrl',
 		templateUrl : 'empresa.html'
 	}).when('/departamento', {
@@ -18,7 +21,7 @@ $app.config(function($routeProvider, $httpProvider) {
 		controller : 'MenuCtrl',
 		templateUrl : 'menu.html'
 	}).otherwise({
-		redirectTo : '/empresa'
+		redirectTo : '/'
 	});
 });
 $app.run(function($rootScope, $resource, $timeout) {
@@ -47,6 +50,11 @@ $app.run(function($rootScope, $resource, $timeout) {
 		icon : "icon-home"
 	};
 });
+
+function IndexCtrl($scope, $resource, $location, $route){
+	$scope.msg = "Sistema em Construção";
+	$scope.imglink = "/resources/images/Construcao.png"
+}
 function EmpresaCtrl($scope, $resource, $location, $route) {
 	$scope.$root.page = {
 		title : "Empresas",
@@ -70,9 +78,13 @@ function UsuarioCtrl($scope) {
 	};
 }
 
-function EmailCtrl($scope) {
-	$scope.email = { config : {}
-	};
+function EmailCtrl($scope, $resource) {
+	var Email  = $resource('/erp/email/load').query({}, function(data){
+		$scope.email = data;
+	}, function(data){
+		console.log(data);
+		alert(data);
+	});
 }
 
 function MenuCtrl($scope, $resource) {
@@ -116,7 +128,7 @@ $app
 										+ '" class="collapse" style="height: auto;"></ul></li>';
 							};
 							var getSubmenu = function(url, icone, nome) {
-								return '<li><a '
+								return '<li style="background-color:black;"><a style="padding-left: 40px;"'
 										+ (url == null ? '' : 'ng-href="' + url
 												+ '"')
 										+ '> <i class="icon-muted pull-left'

@@ -10,10 +10,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.DigestUtils;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Repository
 @Table("Credenciais")
@@ -34,30 +33,27 @@ public class Credencial extends Model implements UserDetails {
 	}
 
 	public String getLogin() {
-		return (String) get("login");
+		return getString("login");
 	}
 
 	public void setLogin(String login) {
-		set("login", login);
+		setString("login", login);
 	}
 
-	@JsonIgnore
 	public String getSenha() {
 		return getString("senha");
 	}
 
-	@JsonProperty("senha")
 	public void setSenha(String senha) {
-		// senha = DigestUtils.md5DigestAsHex(senha.getBytes());
-		set("senha", senha);
+		setString("senha", senha);
 	}
 
 	public String getEmail() {
-		return (String) get("email");
+		return getString("email");
 	}
 
 	public void setEmail(String email) {
-		set("email", email);
+		setString("email", email);
 	}
 
 	@Override
@@ -67,7 +63,6 @@ public class Credencial extends Model implements UserDetails {
 		list.add(ga);
 		return list;
 	}
-
 	@Override
 	public String getPassword() {
 		return getSenha();

@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.javalite.activejdbc.DB;
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.annotations.BelongsTo;
 import org.javalite.activejdbc.annotations.Table;
@@ -16,12 +17,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @BelongsTo(parent = Empresa.class, foreignKeyName = "empresa")
 public class ParametroGlobal extends Model {
 
-	public String getId() {
-		return getString("id");
+	public String getName() {
+		return getString("name");
 	}
 
-	public void setId(String id) {
-		setString("id", id);
+	public void setName(String name) {
+		setString("name", name);
 	}
 
 	public String getValue() {
@@ -41,10 +42,15 @@ public class ParametroGlobal extends Model {
 	}
 
 	@JsonIgnore
+	public void saveFromMap(Map<String, String> config, Empresa empresa) {
+
+	}
+
+	@JsonIgnore
 	public static Map<String, String> getAsMap(List<ParametroGlobal> pg) {
 		Map<String, String> map = new LinkedHashMap<String, String>(0);
 		for (ParametroGlobal parametroGlobal : pg) {
-			map.put(parametroGlobal.getId(), parametroGlobal.getValue());
+			map.put(parametroGlobal.getName(), parametroGlobal.getValue());
 		}
 		return map;
 	}

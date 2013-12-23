@@ -37,10 +37,12 @@ CREATE TABLE Enderecos
 
 CREATE TABLE ParametrosGlobais
 (
-	id VARCHAR(200) NOT NULL,
+	id INTEGER NOT NULL AUTO_INCREMENT,
 	value varchar(200) NOT NULL,
 	empresa INTEGER NOT NULL,
+	name VARCHAR(200) NOT NULL,
 	PRIMARY KEY (id),
+	UNIQUE UQ_ParametrosGlobais_name(name),
 	KEY (empresa),
 	KEY (empresa)
 

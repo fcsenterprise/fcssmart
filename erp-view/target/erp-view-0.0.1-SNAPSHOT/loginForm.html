@@ -53,8 +53,8 @@
 									class="icon-key"></i>
 								</span> <input type="password" placeholder="password" name="password">
 							</div>
-							{{error}}
-							<span ng-show="error">
+							{{$routeParam.error}}
+							<span ng-show="$routeParam.error">
 								Usuario ou senha incorretos
 							</span>
 							<div>

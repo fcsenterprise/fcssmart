@@ -4,3 +4,5 @@ erp-model/.settings/
 erp-infra/.settings/org.eclipse.jdt.core.prefs
 erp-parent/artifact/erp.ldb
 erp-infra/.project
+erp-infra/.settings/org.eclipse.wst.common.component
+erp-infra/.settings/org.eclipse.wst.common.project.facet.core.xml

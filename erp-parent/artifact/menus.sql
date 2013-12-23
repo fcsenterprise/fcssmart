@@ -69,8 +69,5 @@ INSERT INTO `Menus` (`id`, `nome`, `menuPai`, `url`, `icone`) VALUES
 (69, 'Vendas', 2, NULL, 'fa fa-folder'),
 (70, 'Manutenção', 69, NULL, 'fa fa-folder');
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
-insert into Credenciais (login, senha, email) values('admin', '21232f297a57a5a743894a0e4a801fc3', 'fabriciodacunhasantos@gmail.com');
+insert into Credenciais (id,login, senha, email) values(1,'admin', '21232f297a57a5a743894a0e4a801fc3', 'fabriciodacunhasantos@gmail.com');
+insert into Usuarios (nome, cpf, credencial) values ('fabricio', '02623805105', 1);

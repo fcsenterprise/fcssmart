@@ -1,5 +1,6 @@
 package br.com.fabriciocs.erp.view.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.LoggerFactory;
@@ -30,16 +31,22 @@ public class EmailCtrl {
 	String saveConfig(@RequestBody Email email) {
 		log.info(email.toString());
 		Empresa empresa = Empresa.findFirst(" true ");
-
 		for (Map.Entry<String, String> pair : email.config.entrySet()) {
-			pg.setId(pair.getKey());
-			pg.setValue(pair.getValue());
-			pg.setEmpresa(empresa);
-			pg.saveIt();
-			pg.reset();
+			ParametroGlobal.create("name", pair.getKey(), "value", pair.getValue(), "empresa", empresa.getId()).saveIt();
 		}
+		empresa.saveIt();
 		return "foi!";
 	}
+	
+	@RequestMapping(value="/load",consumes = "application/json", method = { RequestMethod.GET })
+	public @ResponseBody
+	Email loadConfig() {
+		Email email = new Email();
+		List<ParametroGlobal> param   = ParametroGlobal.findAll();
+		email.setConfig(ParametroGlobal.getAsMap(param));
+		return email;
+	}
+	
 
 	public static class Email {
 		Map<String, String> config;

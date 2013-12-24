@@ -15,14 +15,12 @@
 
 <link href="resources/stylesheets/application.css" media="screen"
 	rel="stylesheet" type="text/css" />
-<link href="resources/stylesheets/ng-table/ng-table.css" media="screen"
-	rel="stylesheet" type="text/css" />
 
-<script src="resources/javascripts/application.js" type="text/javascript"></script>
+<script src="resources/javascripts/application.js"
+	type="text/javascript"></script>
 <script src="resources/javascripts/angular.min.js"></script>
 
 <script src="resources/javascripts/angular-resource.min.js"></script>
-<script src="resources/javascripts/ng-table/ng-table.js"></script>
 <script src="resources/javascripts/loginCtrl.js"></script>
 </head>
 
@@ -41,39 +39,41 @@
 					</div>
 
 					<div class="box-content padded">
-						<form class="separate-sections" action="/j_spring_security_check" method="post">
-							<div class="input-group addon-left">
-								<span class="input-group-addon" href="#"> <i
-									class="icon-user"></i>
-								</span> <input type="text" placeholder="username" name="username">
+						<div class="alert" ng-show="error">Usuario ou senha
+							incorretos</div>
+						<div>
+							<div class="input-group addon-left text-center">
+								<img class="text-center" src="/resources/images/LOGO.png" />
 							</div>
+							<form class="separate-sections" action="/j_spring_security_check"
+								method="post">
+								<div class="input-group addon-left">
+									<span class="input-group-addon" href="#"> <i
+										class="icon-user"></i>
+									</span> <input type="text" placeholder="username" name="username">
+								</div>
 
-							<div class="input-group addon-left">
-								<span class="input-group-addon" href="#"> <i
-									class="icon-key"></i>
-								</span> <input type="password" placeholder="password" name="password">
-							</div>
-							{{$routeParam.error}}
-							<span ng-show="$routeParam.error">
-								Usuario ou senha incorretos
-							</span>
-							<div>
+								<div class="input-group addon-left">
+									<span class="input-group-addon" href="#"> <i
+										class="icon-key"></i>
+									</span> <input type="password" placeholder="password" name="password">
+								</div>
+
 								<button type="submit" class="btn btn-blue btn-block">
 									Login <i class="icon-signin"></i>
 								</button>
+
+							</form>
+
+							<div>
+								<a href="sign_up.html"> Don't have an account? <strong>Sign
+										Up</strong>
+								</a>
 							</div>
-
-						</form>
-
-						<div>
-							<a href="sign_up.html"> Don't have an account? <strong>Sign
-									Up</strong>
-							</a>
 						</div>
-					</div>
 
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 </body>

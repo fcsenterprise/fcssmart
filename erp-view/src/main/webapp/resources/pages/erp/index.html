@@ -91,7 +91,13 @@
 		<div class="primary-sidebar-background"></div>
 	</div>
 	<div class="primary-sidebar" ng-show="config.logado">
-		<app-menu menus="promise"></app-menu>
+		<ul class="nav navbar-collapse collapse navbar-collapse-primary">
+			<li class="dark-nav"><span class="glow"> </span> <a
+				href="/resources/pages/erp/index.html"> <i
+					class="fa fa-home icon-2x icon-red"></i> <span class="ng-binding">HOME</span>
+			</a></li>
+			</u>
+			<app-menu menus="promise"></app-menu>
 	</div>
 	<div class="main-content">
 
@@ -107,7 +113,7 @@
 						</h5>
 					</div>
 					<div class="pull-right">
-						<img src="/resources/images/LOGO2.png" style="width: 85px"/>
+						<img src="/resources/images/LOGO2.png" style="width: 85px" />
 					</div>
 				</div>
 				<div class="container" ng-view></div>

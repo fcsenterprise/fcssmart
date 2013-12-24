@@ -47,8 +47,8 @@ public class ParametroGlobal extends Model {
 	}
 
 	@JsonIgnore
-	public static Map<String, String> getAsMap(List<ParametroGlobal> pg) {
-		Map<String, String> map = new LinkedHashMap<String, String>(0);
+	public static Map<String, Object> getAsMap(List<ParametroGlobal> pg) {
+		Map<String, Object> map = new LinkedHashMap<String, Object>(0);
 		for (ParametroGlobal parametroGlobal : pg) {
 			map.put(parametroGlobal.getName(), parametroGlobal.getValue());
 		}

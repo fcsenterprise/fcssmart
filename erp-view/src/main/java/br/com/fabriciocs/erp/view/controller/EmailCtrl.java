@@ -16,6 +16,9 @@ import br.com.fabriciocs.erp.model.entity.ParametroGlobal;
 import br.com.fabriciocs.infra.email.service.EmailService;
 import ch.qos.logback.classic.Logger;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @Controller
 @RequestMapping("/email")
 public class EmailCtrl {
@@ -31,31 +34,31 @@ public class EmailCtrl {
 	String saveConfig(@RequestBody Email email) {
 		log.info(email.toString());
 		Empresa empresa = Empresa.findFirst(" true ");
-		for (Map.Entry<String, String> pair : email.config.entrySet()) {
-			ParametroGlobal.create("name", pair.getKey(), "value", pair.getValue(), "empresa", empresa.getId()).saveIt();
+		for (Map.Entry<String, Object> pair : email.config.entrySet()) {
+			ParametroGlobal.create("name", pair.getKey(), "value",
+					pair.getValue(), "empresa", empresa.getId()).saveIt();
 		}
 		empresa.saveIt();
 		return "foi!";
 	}
-	
-	@RequestMapping(value="/load",consumes = "application/json", method = { RequestMethod.GET })
+
+	@RequestMapping(value = "/load", method = { RequestMethod.GET }, produces = { "application/json" })
 	public @ResponseBody
-	Email loadConfig() {
+	String loadConfig() throws JsonProcessingException {
 		Email email = new Email();
-		List<ParametroGlobal> param   = ParametroGlobal.findAll();
+		List<ParametroGlobal> param = ParametroGlobal.findAll();
 		email.setConfig(ParametroGlobal.getAsMap(param));
-		return email;
+		return new ObjectMapper().writeValueAsString(param);
 	}
-	
 
 	public static class Email {
-		Map<String, String> config;
+		private Map<String, Object> config;
 
-		public Map<String, String> getConfig() {
+		public Map<String, Object> getConfig() {
 			return config;
 		}
 
-		public void setConfig(Map<String, String> config) {
+		public void setConfig(Map<String, Object> config) {
 			this.config = config;
 		}
 

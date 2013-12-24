@@ -13,17 +13,21 @@
 	<http pattern="/resources/data/**" security="none" />
 	<http pattern="/resources/components/**" security="none" />
 	<http pattern="/resources/javascripts/**" security="none" />
-	<http pattern="/loginForm.html*" security="none" />
+	<http pattern="/loginForm.html**" security="none" />
+
 	<bean:bean id="openTransactionInView"
 		class="br.com.fabriciocs.erp.view.config.web.filter.OpenTransactionInView" />
-	<http auto-config="true">
-		<intercept-url pattern="/**" access="ROLE_ADMIN" />
+	<http auto-config="true" use-expressions="true"
+		authentication-manager-ref="aut_service" >
+		<intercept-url pattern="/**" access="isAuthenticated()" />
 		<form-login password-parameter="password" login-page="/loginForm.html"
-			username-parameter="username" default-target-url="/resources/pages/erp/index.html" />
-		<logout logout-url="/logout"/>
+			authentication-failure-url="/loginForm.html?error=1"
+			default-target-url="/resources/pages/erp/index.html#/"
+			username-parameter="username" />
+		<logout logout-success-url="/loginForm.html"/>
 		<custom-filter ref="openTransactionInView" before="FIRST" />
 	</http>
-	<authentication-manager>
+	<authentication-manager id="aut_service">
 		<authentication-provider user-service-ref='myUserDetailsImpl'>
 			<password-encoder hash="md5" />
 		</authentication-provider>

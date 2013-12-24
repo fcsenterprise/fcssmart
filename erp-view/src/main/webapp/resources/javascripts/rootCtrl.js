@@ -51,9 +51,23 @@ $app.run(function($rootScope, $resource, $timeout) {
 	};
 });
 
-function IndexCtrl($scope, $resource, $location, $route){
+function loginCtrl($scope, $resource, $location) {
+	$scope.login = function() {
+		$resource('/j_spring_security_check').save($.param($scope.user),
+				function(data) {
+					console.log(data);
+					$location.path('/');
+				}, function(data) {
+					console.log(data);
+					$scope.error = data;
+				});
+
+	};
+}
+
+function IndexCtrl($scope, $resource, $location, $route) {
 	$scope.msg = "Sistema em Construção";
-	$scope.imglink = "/resources/images/Construcao.png"
+	$scope.imglink = "/resources/images/Construcao.png";
 }
 function EmpresaCtrl($scope, $resource, $location, $route) {
 	$scope.$root.page = {
@@ -79,12 +93,15 @@ function UsuarioCtrl($scope) {
 }
 
 function EmailCtrl($scope, $resource) {
-	var Email  = $resource('/erp/email/load').query({}, function(data){
-		$scope.email = data;
-	}, function(data){
-		console.log(data);
-		alert(data);
-	});
+	var Email = $resource('/erp/email/load')
+			.query(
+					{},
+					function(data) {
+						console.log(data);
+					}, function(data) {
+						console.log(data);
+						alert(data);
+					});
 }
 
 function MenuCtrl($scope, $resource) {

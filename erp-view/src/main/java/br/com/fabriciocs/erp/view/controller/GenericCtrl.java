@@ -10,6 +10,8 @@ import org.javalite.activejdbc.Paginator;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,16 +23,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import ch.qos.logback.classic.Logger;
 
-public abstract class genericCtrl<T extends Model> {
+public abstract class GenericCtrl<T extends Model> {
 
 	private Class<T> clazz;
 
-	public genericCtrl(Class<T> clazz) {
+	public GenericCtrl(Class<T> clazz) {
 		this.clazz = clazz;
 	}
 
 	protected abstract Entry<String, Object[]> getParams(String search);
 
+	@PreAuthorize("hasPermission(#this,'READ,ADMIN')")
 	@RequestMapping(produces = { MediaType.APPLICATION_JSON_VALUE }, method = { RequestMethod.GET })
 	public @ResponseBody
 	PaginationDataTableResult<T> getDataTablePage(
@@ -58,8 +61,7 @@ public abstract class genericCtrl<T extends Model> {
 
 	}
 
-	
-
+	@PreAuthorize("hasPermission(#entity,'READ,ADMIN')")
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE }, method = { RequestMethod.GET })
 	public @ResponseBody
@@ -81,6 +83,7 @@ public abstract class genericCtrl<T extends Model> {
 		}
 	}
 
+	@PreAuthorize("hasPermission(#entity,'DELETE,ADMIN')")
 	@RequestMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE }, method = { RequestMethod.DELETE })
 	public @ResponseBody
 	String remove(@PathVariable("id") Long id) {
@@ -93,6 +96,7 @@ public abstract class genericCtrl<T extends Model> {
 		throw new RuntimeException("Objeto não encontrado!");
 	}
 
+	@PreAuthorize("hasPermission(#entity,'CREATE, UPDATE, ADMIN')")
 	@RequestMapping(consumes = { MediaType.APPLICATION_JSON_VALUE }, method = { RequestMethod.POST })
 	public @ResponseBody
 	T salvar(@RequestBody T instance) {

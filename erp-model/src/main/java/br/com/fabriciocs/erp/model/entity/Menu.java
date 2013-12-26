@@ -4,10 +4,12 @@ import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.annotations.BelongsTo;
 import org.javalite.activejdbc.annotations.Table;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Repository
+@Transactional
 @Table("Menus")
 @JsonIgnoreProperties({ "frozen", "valid", "idName", "longId", "new" })
 @BelongsTo(parent = Menu.class, foreignKeyName = "menuPai")

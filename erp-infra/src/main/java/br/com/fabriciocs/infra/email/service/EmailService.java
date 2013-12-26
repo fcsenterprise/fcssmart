@@ -45,14 +45,14 @@ public class EmailService {
 		String name = auth.getName();
 
 		Credencial credencial = Credencial.findFirst("login=?", name);
-		LazyList<ParametroGlobal> params = ParametroGlobal.find(
-				"empresa = ?", 1);
+		LazyList<ParametroGlobal> params = ParametroGlobal.find("empresa = ?",
+				1);
 
 		Map<String, String> config = new HashMap<String, String>();
 		for (ParametroGlobal parametroGlobal : params) {
 			config.put(parametroGlobal.getName(), parametroGlobal.getValue());
 		}
-		
+
 		mailSender.setDefaultEncoding(config.get("servidor.email.encoding"));
 		mailSender.setHost(config.get("servidor.email.host"));
 		mailSender.setPassword(config.get("servidor.email.senha"));
@@ -65,10 +65,12 @@ public class EmailService {
 				Boolean.parseBoolean(config.get("servidor.email.smtp.auth")));
 		prop.put("mail.smtp.starttls.enable", Boolean.parseBoolean(config
 				.get("servidor.email.smtp.starttls.enable")));
+		prop.put("mail.smtp.socketFactory.class",
+				"javax.net.ssl.SSLSocketFactory");
 		from = config.get("servidor.email.usuario");
 		mailSender.setJavaMailProperties(prop);
-		
-		log.info("Configuração de email: "+config);
+
+		log.info("Configuração de email: " + config);
 		return this;
 	}
 
@@ -82,7 +84,8 @@ public class EmailService {
 
 	private void sendEmail(final String assunto, final String msg,
 			final File attach, final String from, final String[] to) {
-		log.info("Enviando email para: "+StringUtils.arrayToCommaDelimitedString(to));
+		log.info("Enviando email para: "
+				+ StringUtils.arrayToCommaDelimitedString(to));
 		MimeMessage message = mailSender.createMimeMessage();
 		try {
 			MimeMessageHelper helper = new MimeMessageHelper(message, true);

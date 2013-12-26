@@ -1,7 +1,5 @@
 package br.com.fabriciocs.erp.model.entity;
 
-import java.util.Date;
-
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.annotations.BelongsTo;
 import org.javalite.activejdbc.annotations.BelongsToParents;
@@ -36,18 +34,17 @@ public class Usuario extends Model {
 		return getString("cpf");
 	}
 
-	public void setDataExpiracao(Date dataExpiracao) {
-		setDate("dataExpiracao", dataExpiracao);
-	}
-
-	public Date getDataExpiracao() {
-		return getDate("dataExpiracao");
-	}
-
 	public void setCredencial(Credencial credencial) {
-		if (credencial.isFrozen() || credencial.getId() == null) {
-			credencial.saveIt();
+		if (credencial.getId() != null) {
+			if (credencial.getSenha() == null
+					|| credencial.getSenha().isEmpty()) {
+				credencial.setSenha(Credencial.<Credencial> findById(
+						credencial.getId()).getSenha());
+			}
+		} else {
+			credencial.setSenha("temp");
 		}
+		credencial.saveIt();
 		setParent(credencial);
 	}
 

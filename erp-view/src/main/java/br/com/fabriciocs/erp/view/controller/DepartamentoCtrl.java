@@ -10,7 +10,7 @@ import br.com.fabriciocs.erp.model.entity.Departamento;
 
 @RequestMapping("departamento")
 @Controller
-public class DepartamentoCtrl extends genericCtrl<Departamento> {
+public class DepartamentoCtrl extends GenericCtrl<Departamento> {
 
 	public DepartamentoCtrl() {
 		super(Departamento.class);

@@ -11,5 +11,9 @@
 	<context:component-scan base-package="br.com.fabriciocs" />
 
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" />
+
+
+	<bean id="appStartupCtrl" class="br.com.fabriciocs.erp.view.controller.AppStartupCtrl"
+		lazy-init="false" init-method="configure"></bean>
 	<aop:aspectj-autoproxy />
 </beans>

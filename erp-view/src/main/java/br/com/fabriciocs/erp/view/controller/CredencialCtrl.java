@@ -21,14 +21,14 @@ public class CredencialCtrl {
 	@Autowired
 	private DataSource dataSource;
 
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAnyRole('USUARIO_READ','ADMIM') and hasPermission(#this, 'ADMIN')")
 	@RequestMapping(value = "/{login}/{email}", method = { RequestMethod.GET }, produces = MediaType.APPLICATION_JSON_VALUE, headers = "Accept=application/json")
 	public @ResponseBody
 	Credencial searchByLoginAndEmail(@PathVariable("login") String login,
 			@PathVariable("email") String email) {
 		return Credencial.findFirst("login = ? and email = ?", login, email);
 	}
-
+	@PreAuthorize("hasAnyRole('USUARIO_CREATE','ADMIM') and hasPermission(#this, 'ADMIN')")
 	@RequestMapping(method = { RequestMethod.POST })
 	public @ResponseBody
 	Credencial save(@RequestBody Credencial credencial) {
@@ -36,6 +36,7 @@ public class CredencialCtrl {
 		return credencial;
 	}
 
+	@PreAuthorize("hasAnyRole('USUARIO_DELETE','ADMIM') and hasPermission(#this, 'ADMIN')")
 	@RequestMapping(value = "/{id}", method = { RequestMethod.DELETE })
 	public @ResponseBody
 	Credencial delete(@PathVariable("id") Long id) {

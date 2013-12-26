@@ -2,6 +2,7 @@ package br.com.fabriciocs.erp.model.entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.javalite.activejdbc.Model;
@@ -10,8 +11,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.DigestUtils;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Repository
@@ -19,17 +20,17 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties({ "frozen", "valid", "idName", "longId", "new",
 		"username", "password", "enabled", "authorities", "metamodelLocal",
 		"parents", "cachedParent", "accountNonExpired", "accountNonLocked",
-		"credentialsNonExpired" })
+		"credentialsNonExpired", "senha" })
 public class Credencial extends Model implements UserDetails {
 
-	public transient String confirmacaoSenha;
+	private transient Empresa empresa;
 
-	public String getConfirmacaoSenha() {
-		return confirmacaoSenha;
+	public Empresa getEmpresa() {
+		return empresa;
 	}
 
-	public void setConfirmacaoSenha(String confirmacaoSenha) {
-		this.confirmacaoSenha = confirmacaoSenha;
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 
 	public String getLogin() {
@@ -40,10 +41,20 @@ public class Credencial extends Model implements UserDetails {
 		setString("login", login);
 	}
 
+	public void setAdmin(Boolean admin) {
+		setBoolean("admin", admin);
+	}
+
+	public Boolean getAdmin() {
+		return getBoolean("admin");
+	}
+
+	@JsonIgnore
 	public String getSenha() {
 		return getString("senha");
 	}
 
+	@JsonIgnore
 	public void setSenha(String senha) {
 		setString("senha", senha);
 	}
@@ -56,13 +67,51 @@ public class Credencial extends Model implements UserDetails {
 		setString("email", email);
 	}
 
+	public void setDataExpiracao(Date dataExpiracao) {
+		setDate("dataExpiracao", dataExpiracao);
+	}
+
+	public Date getDataExpiracao() {
+		return getDate("dataExpiracao");
+	}
+
+	public void setBloqueado(Boolean bloqueado) {
+		setBoolean("bloqueado", bloqueado);
+	}
+
+	public Boolean getBloqueado() {
+		return getBoolean("bloqueado");
+	}
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		GrantedAuthority ga = new SimpleGrantedAuthority("ROLE_ADMIN");
+		List<Permissao> permissoes = Permissao.find("credencial = ?",
+				getLongId());
 		List<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
-		list.add(ga);
+		for (Permissao permissao : permissoes) {
+			String url = permissao.getMenu().getUrl().replace("#/", "");
+			if (permissao.getLer()) {
+				list.add(new SimpleGrantedAuthority(url.toUpperCase() + "_READ"));
+			}
+			if (permissao.getEditar()) {
+				list.add(new SimpleGrantedAuthority(url.toUpperCase() + "_EDIT"));
+			}
+			if (permissao.getCriar()) {
+				list.add(new SimpleGrantedAuthority(url.toUpperCase()
+						+ "_CREATE"));
+			}
+			if (permissao.getRemover()) {
+				list.add(new SimpleGrantedAuthority(url.toUpperCase()
+						+ "_DELETE"));
+			}
+			
+		}
+		if(getAdmin()){
+			list.add(new SimpleGrantedAuthority("ADMIN"));
+		}
 		return list;
 	}
+
 	@Override
 	public String getPassword() {
 		return getSenha();
@@ -75,22 +124,28 @@ public class Credencial extends Model implements UserDetails {
 
 	@Override
 	public boolean isAccountNonExpired() {
-		return true;
+		return getDataExpiracao() == null;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return true;
+		return !getBloqueado();
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		return true;
+		return getDataExpiracao() == null;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		return true;
+		Date dataExpiracao = getDataExpiracao();
+
+		boolean expired = dataExpiracao == null
+				|| dataExpiracao.before(new Date());
+		boolean locked = getBloqueado();
+
+		return (!expired && !locked) || getAdmin();
 	}
 
 }

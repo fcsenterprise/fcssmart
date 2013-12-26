@@ -5,11 +5,14 @@ import org.javalite.activejdbc.annotations.Table;
 import org.springframework.stereotype.Repository;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Table("Enderecos")
 @Repository
 @JsonIgnoreProperties({ "frozen", "valid", "idName", "longId", "new" })
 public class Endereco extends Model {
+	@JsonInclude(Include.NON_EMPTY)
 	public void setDescricao(String descricao) {
 		setString("descricao", descricao);
 	}
@@ -18,6 +21,7 @@ public class Endereco extends Model {
 		return getString("descricao");
 	}
 
+	@JsonInclude(Include.NON_EMPTY)
 	public void setCep(String cep) {
 		setString("cep", cep);
 	}
@@ -26,6 +30,7 @@ public class Endereco extends Model {
 		return getString("cep");
 	}
 
+	@JsonInclude(Include.NON_EMPTY)
 	public void setRua(String rua) {
 		setString("rua", rua);
 	}
@@ -34,6 +39,7 @@ public class Endereco extends Model {
 		return getString("rua");
 	}
 
+	@JsonInclude(Include.NON_EMPTY)
 	public void setNumero(String numero) {
 		setString("numero", numero);
 	}
@@ -42,6 +48,7 @@ public class Endereco extends Model {
 		return getString("numero");
 	}
 
+	@JsonInclude(Include.NON_EMPTY)
 	public void setComplemento(String complemento) {
 		setString("complemento", complemento);
 	}
@@ -54,10 +61,12 @@ public class Endereco extends Model {
 		return getString("bairro");
 	}
 
+	@JsonInclude(Include.NON_EMPTY)
 	public void setBairro(String bairro) {
 		setString("bairro", bairro);
 	}
 
+	@JsonInclude(Include.NON_EMPTY)
 	public void setCidade(String cidade) {
 		setString("cidade", cidade);
 	}
@@ -66,6 +75,7 @@ public class Endereco extends Model {
 		return getString("cidade");
 	}
 
+	@JsonInclude(Include.NON_EMPTY)
 	public void setEstado(String estado) {
 		setString("estado", estado);
 	}
@@ -74,6 +84,7 @@ public class Endereco extends Model {
 		return getString("estado");
 	}
 
+	@JsonInclude(Include.NON_EMPTY)
 	public void setReferencia(String referencia) {
 		setString("referencia", referencia);
 	}

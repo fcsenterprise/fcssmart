@@ -1,0 +1,35 @@
+<!-- find me in partials/data_tables_custom -->
+
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="box">
+			<form class="form-horizontal fill-up validatable" app-form-validate
+				id="usuario-form">
+				<div class="box-content padded">
+					<div class="box-content">
+						<div class="row">
+							<div class="col-lg-6">
+								<ul class="padded separate-sections">
+									<li class="input"><label>Senha Atual</label><input
+										type="password" class="validate[required,minSize[3],password]"
+										data-prompt-position="topLeft" ng-model="usuario.current" /></li>
+									<li class="input"><label>Nova Senha</label><input
+										type="password" class="validate[required,minSize[3],password]"
+										data-prompt-position="topLeft" name="novaSenha" id="novaSenha"
+										ng-model="usuario.newPass" /></li>
+									<li class="input"><label>Confirme Nova Senha</label><input
+										type="password"
+										class="validate[required,minSize[3],password,equals[novaSenha]]"
+										data-prompt-position="topLeft" ng-model="usuario.confirmNew" /></li>
+									<li><a class="btn btn-blue" ng-href=""
+										ng-click="alterarSenha()">Enviar Nova Senha</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

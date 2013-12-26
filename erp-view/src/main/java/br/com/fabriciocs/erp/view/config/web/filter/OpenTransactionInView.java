@@ -1,6 +1,7 @@
 package br.com.fabriciocs.erp.view.config.web.filter;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -34,6 +35,7 @@ public class OpenTransactionInView implements Filter {
 		long before = System.currentTimeMillis();
 		try {
 			Base.open(dataSource);
+			Base.connection().setAutoCommit(false);
 			Base.openTransaction();
 			logger.info(request.toString());
 			chain.doFilter(request, response);
@@ -44,8 +46,10 @@ public class OpenTransactionInView implements Filter {
 		} catch (ServletException e) {
 			Base.rollbackTransaction();
 			throw e;
+		} catch (SQLException e) {
+			Base.rollbackTransaction();
+			throw new RuntimeException(e);
 		} finally {
-
 			Base.close();
 		}
 		logger.info("Processing took: " + (System.currentTimeMillis() - before)

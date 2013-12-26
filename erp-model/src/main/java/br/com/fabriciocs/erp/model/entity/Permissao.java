@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Table("Permissoes")
 @BelongsToParents({
 		@BelongsTo(foreignKeyName = "credencial", parent = Credencial.class),
-		@BelongsTo(foreignKeyName = "menu", parent = Menu.class) })
+		@BelongsTo(foreignKeyName = "menu", parent = Menu.class),
+		@BelongsTo(foreignKeyName = "empresa", parent = Empresa.class) })
 @JsonIgnoreProperties({ "frozen", "valid", "idName", "longId", "new" })
 public class Permissao extends Model {
 	public void setMenu(Menu menu) {
@@ -21,6 +22,14 @@ public class Permissao extends Model {
 
 	public Menu getMenu() {
 		return parent(Menu.class);
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		setParent(empresa);
+	}
+
+	public Empresa getEmpresa() {
+		return parent(Empresa.class);
 	}
 
 	public void setCredencial(Credencial credencial) {
@@ -53,5 +62,13 @@ public class Permissao extends Model {
 
 	public Boolean getRemover() {
 		return getBoolean("remover");
+	}
+
+	public void setLer(Boolean ler) {
+		setBoolean("ler", ler);
+	}
+
+	public Boolean getLer() {
+		return getBoolean("ler");
 	}
 }

@@ -5,6 +5,8 @@ import org.javalite.activejdbc.annotations.Table;
 import org.springframework.stereotype.Repository;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Table("Telefones")
 @Repository
@@ -18,6 +20,7 @@ public class Telefone extends Model {
 		return getString("ddd");
 	}
 
+	@JsonInclude(Include.NON_EMPTY)
 	public void setDescricao(String descricao) {
 		setString("descricao", descricao);
 	}

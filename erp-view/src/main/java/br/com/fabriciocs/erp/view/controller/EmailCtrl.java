@@ -5,12 +5,16 @@ import java.util.Map;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import br.com.fabriciocs.erp.model.entity.Credencial;
 import br.com.fabriciocs.erp.model.entity.Empresa;
 import br.com.fabriciocs.erp.model.entity.ParametroGlobal;
 import br.com.fabriciocs.infra.email.service.EmailService;
@@ -29,36 +33,47 @@ public class EmailCtrl {
 	@Autowired
 	private ParametroGlobal pg;
 
+	@PreAuthorize("hasAnyRole('EMAIL_CREATE','ADMIN') and hasPermission(#this, 'ADMIN')")
 	@RequestMapping(consumes = "application/json", method = { RequestMethod.POST })
 	public @ResponseBody
 	String saveConfig(@RequestBody Email email) {
-		log.info(email.toString());
-		Empresa empresa = Empresa.findFirst(" true ");
-		for (Map.Entry<String, Object> pair : email.config.entrySet()) {
-			ParametroGlobal.create("name", pair.getKey(), "value",
-					pair.getValue(), "empresa", empresa.getId()).saveIt();
+		Authentication auth = SecurityContextHolder.getContext()
+				.getAuthentication();
+		Credencial cred = (Credencial) auth.getPrincipal();
+		Empresa empresa = cred.getEmpresa();
+		for (Map.Entry<String, String> pair : email.config.entrySet()) {
+			ParametroGlobal param = ParametroGlobal.findFirst("name = ?",
+					pair.getKey());
+			if (param == null) {
+				param = new ParametroGlobal();
+				param.setEmpresa(empresa);
+			}
+			param.setName(pair.getKey());
+			param.setValue(pair.getValue());
+			param.saveIt();
 		}
 		empresa.saveIt();
 		return "foi!";
 	}
 
+	@PreAuthorize("hasAnyRole('EMAIL_UPDATE','ADMIN') and hasPermission(#this, 'ADMIN')")
 	@RequestMapping(value = "/load", method = { RequestMethod.GET }, produces = { "application/json" })
 	public @ResponseBody
 	String loadConfig() throws JsonProcessingException {
 		Email email = new Email();
 		List<ParametroGlobal> param = ParametroGlobal.findAll();
 		email.setConfig(ParametroGlobal.getAsMap(param));
-		return new ObjectMapper().writeValueAsString(param);
+		return new ObjectMapper().writeValueAsString(email);
 	}
 
 	public static class Email {
-		private Map<String, Object> config;
+		private Map<String, String> config;
 
-		public Map<String, Object> getConfig() {
+		public Map<String, String> getConfig() {
 			return config;
 		}
 
-		public void setConfig(Map<String, Object> config) {
+		public void setConfig(Map<String, String> config) {
 			this.config = config;
 		}
 

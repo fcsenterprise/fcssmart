@@ -43,7 +43,6 @@ CREATE TABLE ParametrosGlobais
 	name VARCHAR(200) NOT NULL,
 	PRIMARY KEY (id),
 	UNIQUE UQ_ParametrosGlobais_name(name),
-	KEY (empresa),
 	KEY (empresa)
 
 ) 
@@ -78,7 +77,6 @@ CREATE TABLE Permissoes
 	PRIMARY KEY (id),
 	KEY (credencial),
 	KEY (empresa),
-	KEY (menu),
 	KEY (menu)
 
 ) 
@@ -91,7 +89,6 @@ CREATE TABLE Usuarios
 	nome varchar(200) NOT NULL,
 	cpf VARCHAR(11) NULL,
 	credencial integer NOT NULL,
-	dataExpiracao DATE NULL,
 	PRIMARY KEY (Id),
 	UNIQUE UQ_Usuarios_cpf(cpf),
 	KEY (credencial)
@@ -141,9 +138,13 @@ CREATE TABLE Credenciais
 (
 	id integer NOT NULL AUTO_INCREMENT,
 	login varchar(30) NOT NULL,
-	senha varchar(50) NOT NULL,
+	senha VARCHAR(200) NOT NULL,
 	email varchar(50) NULL,
-	PRIMARY KEY (id)
+	admin BOOL NOT NULL DEFAULT false,
+	dataExpiracao DATE NULL,
+	bloqueado BOOL NOT NULL,
+	PRIMARY KEY (id),
+	UNIQUE uq_cred_login(login, email)
 
 ) 
 ;
@@ -164,10 +165,6 @@ CREATE TABLE Telefones
 
 
 
-ALTER TABLE ParametrosGlobais ADD CONSTRAINT FK_ParametrosGlobais_Configuracoes 
-	FOREIGN KEY (empresa) REFERENCES Configuracoes (id)
-;
-
 ALTER TABLE ParametrosGlobais ADD CONSTRAINT FK_ParametrosGlobais_Empresas 
 	FOREIGN KEY (empresa) REFERENCES Empresas (id)
 ;
@@ -182,10 +179,6 @@ ALTER TABLE Permissoes ADD CONSTRAINT FK_Permissoes_Credenciais
 
 ALTER TABLE Permissoes ADD CONSTRAINT FK_Permissoes_Empresas 
 	FOREIGN KEY (empresa) REFERENCES Empresas (id)
-;
-
-ALTER TABLE Permissoes ADD CONSTRAINT FK_Permissoes_Funcionalidades 
-	FOREIGN KEY (menu) REFERENCES Funcionalidades (id)
 ;
 
 ALTER TABLE Permissoes ADD CONSTRAINT FK_Permissoes_Menus 

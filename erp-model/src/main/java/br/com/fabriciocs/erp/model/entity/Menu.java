@@ -43,9 +43,8 @@ public class Menu extends Model {
 	}
 
 	public void setMenu(Menu menu) {
-		if (menu != null && menu.getId() != null) {
-			setParent(menu);
-		}
+		menu.saveIt();
+		setParent(menu);
 	}
 
 	public Menu getMenu() {

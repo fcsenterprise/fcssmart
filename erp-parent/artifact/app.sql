@@ -118,7 +118,7 @@ CREATE TABLE Empresas
 	razaoSocial VARCHAR(100) NOT NULL,
 	nomeFantasia VARCHAR(200) NOT NULL,
 	inscricaoEstadual VARCHAR(50) NOT NULL,
-	codigo INTEGER NOT NULL,
+	codigo VARCHAR(50) NOT NULL,
 	codigoNire VARCHAR(5) NOT NULL,
 	telefone INTEGER NOT NULL,
 	endereco INTEGER NOT NULL,

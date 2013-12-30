@@ -33,7 +33,7 @@ public class EmailCtrl {
 	@Autowired
 	private ParametroGlobal pg;
 
-	@PreAuthorize("hasAnyRole('EMAIL_CREATE','ADMIN') and hasPermission(#this, 'ADMIN')")
+	@PreAuthorize("hasAnyRole('EMAIL_CREATE','ADMIN') or hasPermission(#this, 'ADMIN')")
 	@RequestMapping(consumes = "application/json", method = { RequestMethod.POST })
 	public @ResponseBody
 	String saveConfig(@RequestBody Email email) {

@@ -25,6 +25,7 @@ public class Permissao extends Model {
 	}
 
 	public void setEmpresa(Empresa empresa) {
+		empresa.saveIt();
 		setParent(empresa);
 	}
 
@@ -33,6 +34,7 @@ public class Permissao extends Model {
 	}
 
 	public void setCredencial(Credencial credencial) {
+		credencial.saveIt();
 		setParent(credencial);
 	}
 

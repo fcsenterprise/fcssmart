@@ -4,7 +4,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.javalite.activejdbc.DB;
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.annotations.BelongsTo;
 import org.javalite.activejdbc.annotations.Table;
@@ -38,6 +37,7 @@ public class ParametroGlobal extends Model {
 	}
 
 	public void setEmpresa(Empresa empresa) {
+		empresa.saveIt();
 		setParent(empresa);
 	}
 

@@ -48,9 +48,7 @@ public class Empresa extends Model {
 	}
 
 	public void setTelefone(Telefone telefone) {
-		if (telefone.isFrozen() || telefone.getId() == null) {
-			telefone.save();
-		}
+		telefone.saveIt();
 		setParent(telefone);
 	}
 
@@ -71,9 +69,7 @@ public class Empresa extends Model {
 	}
 
 	public void setEndereco(Endereco endereco) {
-		if (endereco.isFrozen() || endereco.getId() == null) {
-			endereco.save();
-		}
+		endereco.saveIt();
 		setParent(endereco);
 	}
 
@@ -97,12 +93,12 @@ public class Empresa extends Model {
 		add(departamento);
 	}
 
-	public void setCodigo(Integer codigo) {
-		setInteger("codigo", codigo);
+	public void setCodigo(String codigo) {
+		setString("codigo", codigo);
 	}
 
-	public Integer getCodigo() {
-		return getInteger("codigo");
+	public String getCodigo() {
+		return getString("codigo");
 	}
 
 	public void setCodigoNire(String codigoNire) {

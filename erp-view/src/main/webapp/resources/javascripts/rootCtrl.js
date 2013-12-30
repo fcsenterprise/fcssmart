@@ -37,9 +37,6 @@ $app.run(function($rootScope, $resource, $timeout) {
 					alert(data);
 				});
 	};
-	angular.element("form.validatable").validationEngine({
-		promptPosition : "topLeft"
-	});
 	$rootScope.config = {
 		appName : "AngularJS",
 		logado : true,
@@ -481,6 +478,7 @@ $app.directive('appTable', function($location, $modal) {
 							el.parent().children().removeClass('danger');
 							var pos = obj.currentTarget._DT_RowIndex;
 							var selected = scope.dataTable.fnGetData()[pos];
+							console.log(selected);
 							if (scope.appTableSelected == selected) {
 								scope.appTableSelected = {};
 							} else {
@@ -598,12 +596,11 @@ $app.directive('appFormValidate', function() {
 		restrict : 'A',
 		require : '^form',
 		link : function(scope, element, attrs) {
-			angular.element(element).validationEngine({
-				validateNonVisibleFields : true,
-				updatePromptsPosition : true,
-				focusFirstField : true,
+			angular.element(element).validationEngine('detach', {
+				promptPosition : "topLeft",
 				scroll : false,
-				promptPosition : "topLeft"
+				autoHidePrompt : true,
+				autoHideDelay : 5000
 			});
 			$('a[data-toggle="tab"]').on('click', function() {
 				angular.element(element).validationEngine('hideAll');
@@ -716,7 +713,8 @@ $app
 							};
 							scope.salvar = function() {
 								if (scope.isValid()) {
-									Resource.save({},scope.value, function(data) {
+									Resource.save({}, scope.value, function(
+											data) {
 										alert("Salvo Com Sucesso");
 										scope.finishEvent();
 									}, function(data) {

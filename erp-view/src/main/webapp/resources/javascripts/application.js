@@ -57490,9 +57490,7 @@ $(function () {
     $('.tags').tagsInput({
       width: '100%'
     });
-    $("form.validatable").validationEngine({
-      promptPosition: "topLeft"
-    });
+    $("form.validatable").validationEngine('detach');
     $(".chzn-select").select2();
     $('.textarea-html5').wysihtml5({
       "font-styles": true,

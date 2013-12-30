@@ -13,7 +13,7 @@
 				</ul>
 			</div>
 
-			<form class="form-horizontal fill-up validatable" app-form-validate
+			<form class="form-horizontal fill-up " app-form-validate
 				id="empresa-form">
 				<div class="box-content padded">
 					<div class="tab-content">
@@ -58,8 +58,8 @@
 												ui-mask="99999" type="text"
 												class="validate[required,number, maxSize[5], minSize[5]]"
 												data-prompt-position="topLeft" ng-model="empresa.codigoNire" /></li>
-											<li class="input"><label>C&oacute;digo IBGE</label><input type="text"
-												class="validate[required,number]"
+											<li class="input"><label>C&oacute;digo IBGE</label><input
+												type="text" class="validate[required,number]"
 												data-prompt-position="topLeft" ng-model="empresa.codigoIbge" /></li>
 										</ul>
 									</div>
@@ -125,7 +125,8 @@
 												ui-mask="999" data-prompt-position="topLeft"
 												ng-model="empresa.telefone.ddd" /></li>
 											<li class="input"><label>N&uacute;mero</label><input
-												type="text" class="validate[required, minSize[9]]"
+												type="text"
+												class="validate[required, minSize[8], maxSize[9]]"
 												data-prompt-position="topLeft"
 												ng-model="empresa.telefone.numero" /></li>
 										</ul>

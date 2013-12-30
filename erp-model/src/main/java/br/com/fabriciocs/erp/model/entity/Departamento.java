@@ -36,6 +36,7 @@ public class Departamento extends Model {
 	}
 
 	public void setEmpresa(Empresa empresa) {
+		empresa.saveIt();
 		setParent(empresa);
 	}
 
@@ -44,6 +45,7 @@ public class Departamento extends Model {
 	}
 
 	public void addFuncionario(Usuario funcionario) {
+		funcionario.saveIt();
 		add(funcionario);
 	}
 

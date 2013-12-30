@@ -37,7 +37,7 @@ public class PermissaoCtrl {
 		Object[] params = new Object[] { search, search, search, search, search };
 		return new AbstractMap.SimpleEntry<String, Object[]>(query, params);
 	}
-	@PreAuthorize("hasAnyRole('USUARIO_READ') and hasPermission(#this, 'ADMIN')")
+	@PreAuthorize("hasAnyRole('USUARIO_READ') or hasPermission(#this, 'ADMIN')")
 	@RequestMapping(value = "/table/{credencialId}", produces = { MediaType.APPLICATION_JSON_VALUE }, method = { RequestMethod.GET })
 	public @ResponseBody
 	PaginationDataTableResult<Permissao> getDataTablePage(
@@ -69,7 +69,7 @@ public class PermissaoCtrl {
 		return pagination;
 
 	}
-	@PreAuthorize("hasAnyRole('USUARIO_READ') and hasPermission(#this, 'ADMIN')")
+	@PreAuthorize("hasAnyRole('USUARIO_READ') or hasPermission(#this, 'ADMIN')")
 	@RequestMapping(value = "/table/",produces = { MediaType.APPLICATION_JSON_VALUE }, method = { RequestMethod.GET })
 	public @ResponseBody
 	PaginationDataTableResult<Permissao> getDataTablePage(
@@ -97,13 +97,13 @@ public class PermissaoCtrl {
 		return pagination;
 
 	}
-	@PreAuthorize("hasAnyRole('USUARIO_READ') and hasPermission(#this, 'ADMIN')")
+	@PreAuthorize("hasAnyRole('USUARIO_READ') or hasPermission(#this, 'ADMIN')")
 	@RequestMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE }, method = { RequestMethod.GET })
 	public @ResponseBody
 	Permissao getById(@PathVariable("id") Long id) {
 		return Permissao.findById(id);
 	}
-	@PreAuthorize("hasAnyRole('USUARIO_DELETE') and hasPermission(#this, 'ADMIN')")
+	@PreAuthorize("hasAnyRole('USUARIO_DELETE') or hasPermission(#this, 'ADMIN')")
 	@RequestMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE }, method = { RequestMethod.DELETE })
 	public @ResponseBody
 	String remove(@PathVariable("id") Long id) {
@@ -115,7 +115,7 @@ public class PermissaoCtrl {
 		}
 		throw new RuntimeException("Objeto não encontrado!");
 	}
-	@PreAuthorize("hasAnyRole('USUARIO_CREATE','USUARIO_UPDATE') and hasPermission(#this, 'ADMIN')")
+	@PreAuthorize("hasAnyRole('USUARIO_CREATE','USUARIO_UPDATE') or hasPermission(#this, 'ADMIN')")
 	@RequestMapping(value = "/{credencialId}", consumes = { MediaType.APPLICATION_JSON_VALUE }, method = { RequestMethod.POST })
 	public @ResponseBody
 	Permissao salvar(@PathVariable("credencialId") Long id,

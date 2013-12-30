@@ -76,8 +76,8 @@ public class MenuCtrl extends GenericCtrl<Menu> {
 		} else {
 			Credencial cred = Credencial.findById(credId);
 			String url = menu.getUrl();
-			return (url != null && !url.isEmpty() && Permissao.findFirst(
-					"menu = ? and credencial = ?", menu.getId(), credId) != null) || cred.getAdmin() ;
+			return ((url != null && !url.isEmpty()) && (Permissao.findFirst(
+					"menu = ? and credencial = ?", menu.getId(), credId) != null) || cred.getAdmin()) ;
 		}
 	}
 	@PreAuthorize("hasAnyRole('MENU_READ','ADMIN') and hasPermission(#this, 'ADMIN')")

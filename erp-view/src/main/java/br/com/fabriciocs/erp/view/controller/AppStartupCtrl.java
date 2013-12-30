@@ -222,9 +222,9 @@ public class AppStartupCtrl {
 	}
 	private void configureEmpresa(){
 		if(Empresa.count() == 0){
-			Long endereco = Endereco.createIt("descricao","endereco 1","cep","75043044","rua","Rua tal","numero","1988","complemento","perto dali","bairro","centro","cidade","Goiânia","estado","Goiás","referencia","praça linda").getLongId();
-			Long telefone = Telefone.createIt("descricao","telefone principal","ddd","064","numero","93332233").getLongId();
-			Empresa.createIt("cnpj","11234567891011","razaoSocial","Empresa Default","nomeFantasia","Empresa Default","inscricaoEstadual","123456789","codigo","001","codigoNire","00001","telefone",telefone,"endereco",endereco,"inscricaoMunicipal","1234567890","codigoIbge","123456");
+			Long endereco = Endereco.createIt("descricao","Principal","cep","75043044","rua","Av. Tiradentes","numero","1193","bairro","Centro","cidade","Anápolis","estado","Goiás","referencia","Alfa Informática e Igreja Assembéia de Deus Madureira").getLongId();
+			Long telefone = Telefone.createIt("descricao","Principal","ddd","062","numero","92074331").getLongId();
+			Empresa.createIt("cnpj","17217985000104","razaoSocial","Best Smart","nomeFantasia","baroni & santos, tucillo","inscricaoEstadual","100548776","codigo","001","codigoNire","00052","telefone",telefone,"endereco",endereco,"inscricaoMunicipal","4161620011","codigoIbge","5208707");
 		}
 	}
 

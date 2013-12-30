@@ -51,7 +51,7 @@ public class UsuarioCtrl extends GenericCtrl<Usuario> {
 		if (instance.getId() == null) {
 			instance = novaSenha(instance);
 		}
-
+		instance.getCredencial().saveIt();
 		instance.saveIt();
 		return instance;
 
@@ -68,9 +68,13 @@ public class UsuarioCtrl extends GenericCtrl<Usuario> {
 				.encodePassword(senha, null);
 		log.info(senha);
 		credencial.setSenha(novaSenha);
-		emailService.sendEmail("Nova Senha", "Sennha : " + senha, null,
-				new String[] { credencial.getEmail() });
-		credencial.saveIt();
+		try {
+
+			emailService.sendEmail("Nova Senha", "Sennha : " + senha, null,
+					new String[] { credencial.getEmail() });
+		} catch (RuntimeException e) {
+			log.error("Erro ao enviar senha: ", e);
+		}
 		return instance;
 	}
 

@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Repository
 @Transactional
 @Table("Menus")
-@JsonIgnoreProperties({ "frozen", "valid", "idName", "longId", "new" })
+@JsonIgnoreProperties({ "frozen", "valid", "idName", "longId", "new" , "menu"})
 @BelongsTo(parent = Menu.class, foreignKeyName = "menuPai")
 public class Menu extends Model {
 	public void setNome(String nome) {
@@ -50,4 +50,5 @@ public class Menu extends Model {
 	public Menu getMenu() {
 		return parent(Menu.class);
 	}
+	
 }

@@ -1,5 +1,5 @@
 $app = angular.module('rootCtrl', [ 'ngResource', 'ui.mask',
-		'$strap.directives' ]);
+		'$strap.directives', 'ui.select2' ]);
 
 $app.config(function($routeProvider, $httpProvider) {
 	$routeProvider.when('/', {
@@ -8,6 +8,9 @@ $app.config(function($routeProvider, $httpProvider) {
 	}).when('/empresa', {
 		controller : 'EmpresaCtrl',
 		templateUrl : 'empresa.html'
+	}).when('/natureza', {
+		controller : 'NaturezaCtrl',
+		templateUrl : 'natureza.html'
 	}).when('/departamento', {
 		controller : 'DepartamentoCtrl',
 		templateUrl : 'departamento.html'
@@ -44,12 +47,12 @@ $app.run(function($rootScope, $resource, $timeout) {
 			name : "Fabrício Santos",
 		}
 	};
-	Config = $resource("/config");
-	$rootScope.loadConfig = function() {
-		Config.query(function(data) {
-			$rootScope.config = data;
-		});
-	};
+	// Config = $resource("/config");
+	// $rootScope.loadConfig = function() {
+	// Config.query(function(data) {
+	// $rootScope.config = data;
+	// });
+	// };
 
 	$rootScope.page = {
 		title : "Home",
@@ -57,7 +60,9 @@ $app.run(function($rootScope, $resource, $timeout) {
 		icon : "icon-home"
 	};
 });
-
+function NaturezaCtrl($scope, $resource, $location) {
+	$scope.natureza = {};
+}
 function loginCtrl($scope, $resource, $location) {
 	$scope.login = function() {
 		$resource('/j_spring_security_check').save($.param($scope.user),
@@ -171,6 +176,11 @@ function UsuarioCtrl($scope, $resource) {
 			$scope.permissoes.splice(index, 1);
 		}
 	};
+
+	$scope.usuario = {
+		bloqueado : false,
+		admin : false
+	};
 }
 
 function EmailCtrl($scope, $resource) {
@@ -242,7 +252,7 @@ $app
 									paramId : '@paramId'
 								}).get({
 									paramId : id
-								}, function(data) {
+								}, {}, function(data) {
 									console.log(data);
 									scope.selected = data;
 								}, function(data) {
@@ -521,6 +531,97 @@ $app.directive('appEndereco', function() {
 		}
 	};
 });
+$app.directive('appModal', function() {
+	return {
+		restrict : 'EA',
+		templateUrl : '/resources/components/enderecoModal.html',
+		transclude : true,
+		scope : {
+			modalId : '@',
+			modalTitle : '@',
+		}
+	};
+});
+$app.directive('appPage', function() {
+	return {
+		restrict : 'EA',
+		replace: 'true',
+		templateUrl : '/resources/components/appPage.html',
+		transclude : true,
+		scope : {}
+	};
+});
+$app.directive('appTab', function() {
+	return {
+		restrict : 'EA',
+		replace: 'true',
+		templateUrl : '/resources/components/appTab.html',
+		transclude : true,
+		scope : {}
+	};
+});
+
+$app.directive('appForm', function() {
+	return {
+		restrict : 'EA',
+		replace: 'true',
+		templateUrl : '/resources/components/appForm.html',
+		transclude : true,
+		scope : {}
+	};
+});
+
+$app.directive('appInput', function() {
+	return {
+		restrict : 'EA',
+		replace: 'true',
+		templateUrl : '/resources/components/appInput.html',
+		transclude : true,
+		scope : {label:'='}
+	};
+});
+
+$app.directive('appTabHeader', function() {
+	return {
+		restrict : 'EA',
+		replace: 'true',
+		templateUrl : '/resources/components/appTabHeader.html',
+		transclude : true,
+		scope : {}
+	};
+});
+
+$app.directive('appTabContent', function() {
+	return {
+		restrict : 'EA',
+		replace: 'true',
+		templateUrl : '/resources/components/appTabContent.html',
+		transclude : true,
+		scope : {}
+	};
+});
+$app.directive('contentOption', function() {
+	return {
+		restrict : 'EA',
+		replace: 'true',
+		templateUrl : '/resources/components/contentOption.html',
+		transclude : true,
+		scope : {contentId:'@',contentActive:'@?'}
+	};
+});
+$app.directive('headerOption', function() {
+	return {
+		restrict : 'EA',
+		replace: 'true',
+		templateUrl : '/resources/components/headerOption.html',
+		scope : {
+			headerActive : '@?',
+			contentId : '@',
+			headerIcon : '@',
+			headerTitle : '='
+		}
+	};
+});
 
 $app.directive('modalShower', function() {
 	return {
@@ -561,6 +662,61 @@ $app
 											+ '" app-table app-table-columns="columns"'
 											+ 'app-table-selected="empresa" recriate="false" app-table-action="#/empresa/"'
 											+ 'app-table-link="\'/erp/empresa\'" app-edit-link="/empresa"></table></div></div></div>';
+									scope.columns = [
+											{
+												'mData' : 'id',
+												'sTitle' : 'ID'
+											},
+											{
+												'mData' : 'cnpj',
+												'sTitle' : 'CNPJ'
+											},
+											{
+												'mData' : 'razaoSocial',
+												'sTitle' : 'Raz&atilde;o Social'
+											},
+											{
+												'mData' : 'nomeFantasia',
+												'sTitle' : 'Nome Fantasia'
+											},
+											{
+												'mData' : 'inscricaoEstadual',
+												'sTitle' : 'Inscri&ccedil;&atilde;o Estadual'
+											} ];
+									var currentElement = angular
+											.element(template);
+									element.replaceWith(currentElement);
+									$compile(currentElement)(scope);
+								}
+							};
+						}
+					};
+				});
+
+$app
+		.directive(
+				'empresaPermissionTable',
+				function($compile) {
+					return {
+						restrict : 'E',
+						scope : {
+							empresa : '=',
+							columns : '=?',
+						},
+						compile : function compile(tElement, tAttrs, transclude) {
+							return {
+								pre : function preLink(scope, element, attrs,
+										controller) {
+									template = '<div class="box">'
+											+ '<div class="box-header">'
+											+ '	<span class="title">Empresas</span>'
+											+ '</div><div class="box-content">'
+											+ '<div id="dataTable">'
+											+ '<table id="'
+											+ scope.$id
+											+ '" app-table app-table-columns="columns"'
+											+ 'app-table-selected="empresa" recriate="false" app-table-action="#/empresa/"'
+											+ 'app-table-link="\'/erp/empresa/permission\'" app-edit-link="/empresa"></table></div></div></div>';
 									scope.columns = [
 											{
 												'mData' : 'id',
@@ -647,6 +803,7 @@ $app
 							};
 							scope.salvar = function() {
 								if (scope.isValid()) {
+									scope.value.credencial = scope.credencial;
 									Resource.save({
 										credencialId : scope.credencial.id
 									}, scope.value, function(data) {
@@ -705,10 +862,10 @@ $app
 								return ret;
 							};
 							scope.finishEvent = function() {
-								if (scope.fullReload == 'false') {
-									$route.reload();
-								} else {
+								if (scope.fullReload == 'true') {
 									$window.location.reload();
+								} else {
+									$route.reload();
 								}
 							};
 							scope.salvar = function() {

@@ -34,6 +34,15 @@ public class Permissao extends Model {
 	}
 
 	public void setCredencial(Credencial credencial) {
+		if (credencial.getId() != null) {
+			if (credencial.getSenha() == null
+					|| credencial.getSenha().isEmpty()) {
+				credencial.setSenha(Credencial.<Credencial> findById(
+						credencial.getId()).getSenha());
+			}
+		} else {
+			credencial.setSenha("temp");
+		}
 		credencial.saveIt();
 		setParent(credencial);
 	}

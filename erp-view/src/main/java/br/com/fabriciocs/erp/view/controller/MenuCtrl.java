@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.fabriciocs.erp.model.entity.Credencial;
 import br.com.fabriciocs.erp.model.entity.Menu;
-import br.com.fabriciocs.erp.model.entity.Permissao;
 import br.com.fabriciocs.erp.view.controller.MenuCtrl.AddMenuEval;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -38,7 +38,7 @@ public class MenuCtrl extends GenericCtrl<Menu> {
 		return new AbstractMap.SimpleEntry<String, Object[]>(query, params);
 	}
 
-	@PreAuthorize("hasAnyRole('MENU_READ','ADMIN') and hasPermission(#this, 'ADMIN')")
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "/all", produces = { MediaType.APPLICATION_JSON_VALUE }, method = { RequestMethod.GET })
 	public @ResponseBody
 	List<HierarquicalMenu> getTopLevel() {
@@ -65,7 +65,18 @@ public class MenuCtrl extends GenericCtrl<Menu> {
 	}
 
 	public boolean canAdd(Menu menu, Long credId) {
-		List<Menu> children = menu.getAll(Menu.class);
+		List<Menu> children = Menu
+				.findBySQL(
+						new StringBuilder("SELECT Menus.*")
+								.append("from Menus  ")
+								.append("left join Permissoes on Menus.id = Permissoes.menu ")
+								.append("left join Credenciais  ")
+								.append("on Permissoes.credencial = Credenciais.id ")
+								.append("where Menus.menuPai = ?  and ( ")
+								.append("( select admin from Credenciais where id = ?) = true ")
+								.append("or Credenciais.id = ? "
+										+ ") order by Menus.id").toString(),
+						menu.getId(), credId, credId);
 		if (children != null && !children.isEmpty()) {
 			for (Menu child : children) {
 				if (canAdd(child, credId)) {
@@ -74,13 +85,12 @@ public class MenuCtrl extends GenericCtrl<Menu> {
 			}
 			return false;
 		} else {
-			Credencial cred = Credencial.findById(credId);
 			String url = menu.getUrl();
-			return ((url != null && !url.isEmpty()) && (Permissao.findFirst(
-					"menu = ? and credencial = ?", menu.getId(), credId) != null) || cred.getAdmin()) ;
+			return StringUtils.hasText(url);
 		}
 	}
-	@PreAuthorize("hasAnyRole('MENU_READ','ADMIN') and hasPermission(#this, 'ADMIN')")
+
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "/all/{id}", produces = { MediaType.APPLICATION_JSON_VALUE }, method = { RequestMethod.GET })
 	public @ResponseBody
 	List<Menu> getChildren(@PathVariable("id") Long id) {
@@ -154,6 +164,31 @@ class HierarquicalMenu {
 			}
 		}
 		return this;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((object == null) ? 0 : object.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		HierarquicalMenu other = (HierarquicalMenu) obj;
+		if (object == null) {
+			if (other.object != null)
+				return false;
+		} else if (!object.equals(other.object))
+			return false;
+		return true;
 	}
 
 }

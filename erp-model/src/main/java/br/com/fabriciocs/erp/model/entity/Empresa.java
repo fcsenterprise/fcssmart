@@ -1,6 +1,7 @@
 package br.com.fabriciocs.erp.model.entity;
 
 import java.util.List;
+import java.util.Map;
 
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.annotations.BelongsTo;
@@ -129,6 +130,22 @@ public class Empresa extends Model {
 			tel.delete();
 		}
 		return ret;
+	}
+	
+	public String configureEmail(Email email){
+		for (Map.Entry<String, String> pair : email.config.entrySet()) {
+			ParametroGlobal param = ParametroGlobal.findFirst("name = ?",
+					pair.getKey());
+			if (param == null) {
+				param = new ParametroGlobal();
+				param.setEmpresa(this);
+			}
+			param.setName(pair.getKey());
+			param.setValue(pair.getValue());
+			param.saveIt();
+		}
+		saveIt();
+		return "Email Configurado Com Sucesso!";
 	}
 
 }

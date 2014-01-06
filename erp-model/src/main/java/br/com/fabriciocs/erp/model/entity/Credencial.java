@@ -7,8 +7,10 @@ import java.util.List;
 
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.annotations.Table;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
@@ -20,10 +22,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties({ "frozen", "valid", "idName", "longId", "new",
 		"username", "password", "enabled", "authorities", "metamodelLocal",
 		"parents", "cachedParent", "accountNonExpired", "accountNonLocked",
-		"credentialsNonExpired", "senha" })
+		"credentialsNonExpired" })
 public class Credencial extends Model implements UserDetails {
 
 	private transient Empresa empresa;
+	
+	public Credencial() {
+	}
 
 	public Empresa getEmpresa() {
 		return empresa;
@@ -104,9 +109,9 @@ public class Credencial extends Model implements UserDetails {
 				list.add(new SimpleGrantedAuthority(url.toUpperCase()
 						+ "_DELETE"));
 			}
-			
+
 		}
-		if(getAdmin()){
+		if (getAdmin()) {
 			list.add(new SimpleGrantedAuthority("ADMIN"));
 		}
 		return list;
@@ -141,11 +146,31 @@ public class Credencial extends Model implements UserDetails {
 	public boolean isEnabled() {
 		Date dataExpiracao = getDataExpiracao();
 
-		boolean expired = dataExpiracao == null
-				|| dataExpiracao.before(new Date());
+		boolean expired = dataExpiracao != null
+				&& dataExpiracao.before(new Date());
 		boolean locked = getBloqueado();
 
 		return (!expired && !locked) || getAdmin();
 	}
 
+	/**
+	 * remove uma Credencial baseada no id passado
+	 * @param id
+	 * @return mensagem de erro ou sucesso
+	 */
+	public static String deleteById(Long id) {
+		try {
+			Credencial.delete("where id = ?", id);
+		} catch (RuntimeException ex) {
+			return new StringBuilder("houve um erro ao tentar deletar: ")
+					.append(ex.getMessage()).toString();
+		}
+		return "Removido com sucesso!";
+	}
+
+	public static Credencial getCredencialLogged(){
+		Authentication auth = SecurityContextHolder.getContext()
+				.getAuthentication();
+		return (Credencial) auth.getPrincipal();
+	}
 }

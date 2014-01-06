@@ -28,20 +28,18 @@ public class CredencialCtrl {
 			@PathVariable("email") String email) {
 		return Credencial.findFirst("login = ? and email = ?", login, email);
 	}
+
 	@PreAuthorize("hasAnyRole('USUARIO_CREATE','ADMIM') and hasPermission(#this, 'ADMIN')")
 	@RequestMapping(method = { RequestMethod.POST })
 	public @ResponseBody
-	Credencial save(@RequestBody Credencial credencial) {
+	void save(@RequestBody Credencial credencial) {
 		credencial.saveIt();
-		return credencial;
 	}
 
 	@PreAuthorize("hasAnyRole('USUARIO_DELETE','ADMIM') or hasPermission(#this, 'ADMIN')")
 	@RequestMapping(value = "/{id}", method = { RequestMethod.DELETE })
 	public @ResponseBody
-	Credencial delete(@PathVariable("id") Long id) {
-		Credencial credencial = Credencial.findById(id);
-		credencial.delete();
-		return credencial;
+	String delete(@PathVariable("id") Long id) {
+		return Credencial.deleteById(id);
 	}
 }

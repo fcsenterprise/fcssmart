@@ -73,6 +73,13 @@
 														ng-init="usuario.credencial.bloqueado = false" /> <label
 														for="c1">Bloqueado</label>
 												</div></li>
+											<li><div>
+													<input type="checkbox" id="c2" name="cc2" app-checkbox
+														ng-model="usuario.credencial.admin"
+														ng-checked="usuario.credencial.admin"
+														ng-init="usuario.credencial.admin = false" /> <label
+														for="c1">Administrador</label>
+												</div></li>
 											<li><a class="btn btn-blue" ng-href=""
 												ng-click="reenviarSenha()" ng-show="usuario!=null">Enviar
 													Nova Senha</a></li>

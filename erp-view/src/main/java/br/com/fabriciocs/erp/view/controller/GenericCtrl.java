@@ -110,6 +110,6 @@ public abstract class GenericCtrl<T extends Model> {
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 	public String handleException(Exception e) {
 		log.error("", e);
-		return e.getLocalizedMessage();
+		return e.getMessage();
 	}
 }

@@ -37,6 +37,7 @@ public class PermissaoCtrl {
 		Object[] params = new Object[] { search, search, search, search, search };
 		return new AbstractMap.SimpleEntry<String, Object[]>(query, params);
 	}
+
 	@PreAuthorize("hasAnyRole('USUARIO_READ') or hasPermission(#this, 'ADMIN')")
 	@RequestMapping(value = "/table/{credencialId}", produces = { MediaType.APPLICATION_JSON_VALUE }, method = { RequestMethod.GET })
 	public @ResponseBody
@@ -53,9 +54,10 @@ public class PermissaoCtrl {
 			@RequestParam("sEcho") String echo) {
 		search = '%' + search + '%';
 		Entry<String, Object[]> params = getParams(search);
-		List<Object> asList = new ArrayList<Object>(Arrays.asList(params.getValue()));
+		List<Object> asList = new ArrayList<Object>(Arrays.asList(params
+				.getValue()));
 		asList.add(id);
-		
+
 		Paginator paginator = new Paginator(Permissao.class, displayLength,
 				params.getKey() + " and credencial = ? ", asList.toArray());
 		if (sortCols > 0) {
@@ -69,8 +71,9 @@ public class PermissaoCtrl {
 		return pagination;
 
 	}
+
 	@PreAuthorize("hasAnyRole('USUARIO_READ') or hasPermission(#this, 'ADMIN')")
-	@RequestMapping(value = "/table/",produces = { MediaType.APPLICATION_JSON_VALUE }, method = { RequestMethod.GET })
+	@RequestMapping(value = "/table/", produces = { MediaType.APPLICATION_JSON_VALUE }, method = { RequestMethod.GET })
 	public @ResponseBody
 	PaginationDataTableResult<Permissao> getDataTablePage(
 			@RequestParam("iDisplayStart") Integer displayStart,
@@ -97,12 +100,14 @@ public class PermissaoCtrl {
 		return pagination;
 
 	}
+
 	@PreAuthorize("hasAnyRole('USUARIO_READ') or hasPermission(#this, 'ADMIN')")
 	@RequestMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE }, method = { RequestMethod.GET })
 	public @ResponseBody
 	Permissao getById(@PathVariable("id") Long id) {
 		return Permissao.findById(id);
 	}
+
 	@PreAuthorize("hasAnyRole('USUARIO_DELETE') or hasPermission(#this, 'ADMIN')")
 	@RequestMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE }, method = { RequestMethod.DELETE })
 	public @ResponseBody
@@ -115,12 +120,11 @@ public class PermissaoCtrl {
 		}
 		throw new RuntimeException("Objeto não encontrado!");
 	}
+
 	@PreAuthorize("hasAnyRole('USUARIO_CREATE','USUARIO_UPDATE') or hasPermission(#this, 'ADMIN')")
 	@RequestMapping(value = "/{credencialId}", consumes = { MediaType.APPLICATION_JSON_VALUE }, method = { RequestMethod.POST })
 	public @ResponseBody
-	Permissao salvar(@PathVariable("credencialId") Long id,
-			@RequestBody Permissao instance) {
-		instance.setCredencial(Credencial.<Credencial> findById(id));
+	Permissao salvar(@RequestBody Permissao instance) {
 		instance.save();
 		return instance;
 	}

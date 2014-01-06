@@ -11,6 +11,7 @@ import org.springframework.security.authentication.encoding.MessageDigestPasswor
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,7 +23,7 @@ import br.com.fabriciocs.erp.model.entity.Usuario;
 import br.com.fabriciocs.infra.email.service.EmailService;
 
 @RequestMapping("/usuario")
-@Controller
+@Repository
 public class UsuarioCtrl extends GenericCtrl<Usuario> {
 
 	private static final int PASSWORD_SIZE = 8;
@@ -51,7 +52,6 @@ public class UsuarioCtrl extends GenericCtrl<Usuario> {
 		if (instance.getId() == null) {
 			instance = novaSenha(instance);
 		}
-		instance.getCredencial().saveIt();
 		instance.saveIt();
 		return instance;
 
@@ -68,17 +68,14 @@ public class UsuarioCtrl extends GenericCtrl<Usuario> {
 				.encodePassword(senha, null);
 		log.info(senha);
 		credencial.setSenha(novaSenha);
-		try {
 
-			emailService.sendEmail("Nova Senha", "Sennha : " + senha, null,
-					new String[] { credencial.getEmail() });
-		} catch (RuntimeException e) {
-			log.error("Erro ao enviar senha: ", e);
-		}
+		emailService.sendEmail("Nova Senha", "Sennha : " + senha, null,
+				new String[] { credencial.getEmail() });
+		credencial.saveIt();
 		return instance;
 	}
 
-	@PreAuthorize("hasAnyRole('EMPRESA_READ', 'ADMIN') or hasPermission(#this, 'EMPRESA_RED,ADMIN')")
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(value = "/selecionarEmpresa", consumes = { MediaType.APPLICATION_JSON_VALUE }, method = { RequestMethod.POST })
 	public @ResponseBody
 	String selecionarEmpresa(@RequestBody Empresa empresa) {
@@ -89,7 +86,7 @@ public class UsuarioCtrl extends GenericCtrl<Usuario> {
 		return "Empresa Selecionada!";
 	}
 
-	@PreAuthorize("hasAnyRole('USUARIO_UPDATE','ADMIN') and hasPermission(#this, 'ADMIN')")
+	@PreAuthorize("hasPermission(#this, 'ALTERARSENHA_EDIT,ADMIN')")
 	@RequestMapping(value = "/alterarSenha", consumes = { MediaType.APPLICATION_JSON_VALUE }, method = { RequestMethod.POST })
 	public @ResponseBody
 	String alterarSenha(@RequestBody AlterarSenhaHelper helper) {

@@ -6,8 +6,8 @@ import org.springframework.stereotype.Repository;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Repository
-@Table("CodigosTributacao")
+@Table("ImpostoImportacao")
 @JsonIgnoreProperties({ "frozen", "valid", "idName", "longId", "new" })
-public class CodigoTributacao extends SimpleTable {
+public class ImpostoImportacao extends SimpleTable {
 
 }

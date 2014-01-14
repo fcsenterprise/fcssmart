@@ -1,6 +1,13 @@
 package br.com.fabriciocs.erp.model.entity;
 
+import org.javalite.activejdbc.annotations.Table;
+import org.springframework.stereotype.Repository;
 
-public class BaseIcms extends SimpleTable{
-	
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@Repository
+@Table("BasesIcms")
+@JsonIgnoreProperties({ "frozen", "valid", "idName", "longId", "new" })
+public class BaseIcms extends SimpleTable {
+
 }

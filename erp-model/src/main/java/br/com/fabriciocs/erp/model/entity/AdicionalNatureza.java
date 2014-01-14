@@ -1,199 +1,195 @@
 package br.com.fabriciocs.erp.model.entity;
 
 import org.javalite.activejdbc.Model;
+import org.javalite.activejdbc.annotations.Table;
+import org.springframework.stereotype.Repository;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@Repository
+@Table("AdicionaisNaturezas")
+@JsonIgnoreProperties({ "frozen", "valid", "idName", "longId", "new" })
 public class AdicionalNatureza extends Model {
-	public void setCodigoTributacao(CodigoTributacao codigoTributacao) {
-		setParent(codigoTributacao);
+
+	public void setOperacaoTransferencia(Boolean operacaoTransferencia) {
+		setBoolean("operacaoTransferencia", operacaoTransferencia);
 	}
 
-	public CodigoTributacao getCodigoTributacao() {
-		return parent(CodigoTributacao.class);
+	public Boolean getOperacaoTransferencia() {
+		return getBoolean("operacaoTransferencia");
 	}
 
-	public void setAliquota(Double aliquota) {
-		setDouble("aliquota", aliquota);
+	public void setNaturezaComplementar(NaturezaOperacao naturezaOperacao) {
+		setParent(naturezaOperacao);
 	}
 
-	public Double getAliquota() {
-		return getDouble("aliquota");
+	public NaturezaOperacao getNaturezaComplementar() {
+		return parent(NaturezaOperacao.class);
 	}
 
-	public void setAliquotaComplementar(Double aliquota) {
-		setDouble("aliquotaComplementar", aliquota);
+	public ValNaturezaBonificacao getValNaturezaBonificacao() {
+		return parent(ValNaturezaBonificacao.class);
 	}
 
-	public Double getAliquotaComplementar() {
-		return getDouble("aliquotaComplementar");
+	public void setValNaturezaBonificacao(ValNaturezaBonificacao valNaturezaBonificacao) {
+		setParent(valNaturezaBonificacao);
 	}
 
-	public void setBaseIcms(BaseIcms baseIcms) {
-		setParent(baseIcms);
+	public Boolean getNaturezaBonificacao() {
+		return getBoolean("naturezaBonificacao");
 	}
 
-	public BaseIcms getBaseIcms() {
-		return parent(BaseIcms.class);
-	}
-
-	public void setTipoBaseIcms(TipoBaseIcms tipoBaseIcms) {
-		setParent(tipoBaseIcms);
-	}
-
-	public TipoBaseIcms getTipoBaseIcms() {
-		return parent(TipoBaseIcms.class);
-	}
-
-	public void setExtornaIcms(Boolean extornaIcms) {
-		setBoolean("extornaIcms", extornaIcms);
-	}
-
-	public Boolean getExtornaIcms() {
-		return getBoolean("extornaIcms");
-	}
-
-	public void setPercDescontoIcms(Double percDescontoIcms) {
-		setDouble("percDescontoIcms", percDescontoIcms);
-	}
-
-	public Double getPercDescontoIcms() {
-		return getDouble("percDescontoIcms");
-	}
-
-	public void setPercDescZonaFranca(Double percDescZonaFranca) {
-		setDouble("percDescZonaFranca", percDescZonaFranca);
-	}
-
-	public Double getPercDescZonaFranca() {
-		return getDouble("percDescZonaFranca");
-	}
-
-	public void setPercReducaoIcms(Double percReducaoIcms) {
-		setDouble("percReducaoIcms", percReducaoIcms);
+	public void setNaturezaBonificacao(Boolean naturezaBonificacao) {
+		setDouble("naturezaBonificacao", naturezaBonificacao);
 	}
 
 	public Double getPercReducaoIcms() {
 		return getDouble("percReducaoIcms");
 	}
 
-	public void setDestReducao(DestReducao destReducao) {
-		setParent(destReducao);
+	public void setTipoCompraVenda(TipoCompraVenda tipoCompraVenda) {
+		setParent(tipoCompraVenda);
 	}
 
-	public DestReducao getDestReducao() {
-		return parent(DestReducao.class);
+	public TipoCompraVenda getTipoCompraVenda() {
+		return parent(TipoCompraVenda.class);
 	}
 
-	public void setSubsTributaria(Boolean subsTributaria) {
-		setBoolean("subsTributaria", subsTributaria);
+	public void setVvItTerceiros(Double vvItTerceiros) {
+		setDouble("vvItTerceiros", vvItTerceiros);
 	}
 
-	public Boolean getSubsTributaria() {
-		return getBoolean("subsTributaria");
+	public Double getVvItTerceiros() {
+		return getDouble("vvItTerceiros");
 	}
 
-	public void setPercIcmsSubsTrib(Double percIcmsSubsTrib) {
-		setDouble("percIcmsSubsTrib", percIcmsSubsTrib);
+	public void setAlterarValorItTerceiros(Boolean alterarValorItTerceiros) {
+		setBoolean("alterarValorItTerceiros", alterarValorItTerceiros);
 	}
 
-	public Double getPercIcmsSubsTrib() {
-		return getDouble("percIcmsSubsTrib");
+	public Boolean getAlterarValorItTerceiros() {
+		return getBoolean("alterarValorItTerceiros");
 	}
 
-	public void setItIcmsCobrSt(Boolean itIcmsCobrSt) {
-		setBoolean("itIcmsCobrSt", itIcmsCobrSt);
+	public TipoDevolucaoConsignado getTpDevolucaoConsignado() {
+		return parent(TipoDevolucaoConsignado.class);
 	}
 
-	public Boolean getItIcmsCobrSt() {
-		return getBoolean("itIcmsCobrSt");
+	public void setTpDevolucaoConsignado(TipoDevolucaoConsignado tipoDevolucaoConsignado) {
+		setParent(tipoDevolucaoConsignado);
 	}
 
-	public void setIcmsOutVlrSt(Boolean icmsOutVlrSt) {
-		setBoolean("icmsOutVlrSt", icmsOutVlrSt);
+	public TipoOperacaoTerceiros getTpOpTerceiros() {
+		return parent(TipoOperacaoTerceiros.class);
 	}
 
-	public Boolean getIcmsOutVlrSt() {
-		return getBoolean("icmsOutVlrSt");
+	public void setTpOpTerceiros(TipoOperacaoTerceiros tipoOperacaoTerceiros) {
+		setParent(tipoOperacaoTerceiros);
 	}
 
-	public void setGerarCreditoSt(Boolean gerarCreditoSt) {
-		setBoolean("gerarCreditoSt", gerarCreditoSt);
+	public void setOpTerceiros(Boolean opTerceiros) {
+		setBoolean("opTerceiros", opTerceiros);
+	}
+
+	public Boolean getOpTerceiros() {
+		return getBoolean("opTerceiros");
+	}
+
+	public void setMemExportacao(Boolean memExportacao) {
+		setBoolean("memExportacao", memExportacao);
 
 	}
 
-	public Boolean getGerarCreditoSt() {
-		return getBoolean("gerarCreditoSt");
+	public Boolean getMemExportacao() {
+		return getBoolean("memExportacao");
 	}
 
-	public Boolean getDiminuiStFrete() {
-		return getBoolean("diminuiStFrete");
+	public Boolean getDrawBack() {
+		return getBoolean("drawBack");
 	}
 
-	public void setDiminuiStFrete(Boolean diminuiStFrete) {
-		setBoolean("diminuiStFrete", diminuiStFrete);
+	public void setDrawBack(Boolean drawBack) {
+		setBoolean("drawBack", drawBack);
 	}
 
-	public Boolean getConsumidorFinal() {
-		return getBoolean("consumidorFinal");
+	public Boolean getOpTriangular() {
+		return getBoolean("opTriangular");
 	}
 
-	public void setConsumidorFinal(Boolean consumidorFinal) {
-		setBoolean("consumidorFinal", consumidorFinal);
+	public void setOpTriangular(Boolean opTriangular) {
+		setBoolean("opTriangular", opTriangular);
 	}
 
-	public Boolean getItIcmsSuspenso() {
-		return getBoolean("itIcmsSuspenso");
+	public Boolean getGerarDevValor() {
+		return getBoolean("gerarDevValor");
 	}
 
-	public void setItIcmsSuspenso(Boolean itIcmsSuspenso) {
-		setBoolean("itIcmsSuspenso", itIcmsSuspenso);
+	public void setGerarDevValor(Boolean gerarDevValor) {
+		setBoolean("gerarDevValor", gerarDevValor);
 	}
 
-	public Boolean getNaoTributada() {
-		return getBoolean("naoTributada");
+	public Boolean getVendaAmbulante() {
+		return getBoolean("vendaAmbulante");
 	}
 
-	public void setNaoTributada(Boolean naoTributada) {
-		setBoolean("naoTributada", naoTributada);
+	public void setVendaAmbulante(Boolean vendaAmbulante) {
+		setBoolean("vendaAmbulante", vendaAmbulante);
 	}
 
-	public Boolean getContSubsAntecipada() {
-		return getBoolean("contSubsAntecipada");
+	public Boolean getInicioCreditoAutomatico() {
+		return getBoolean("inicioCreditoAutomatico");
 	}
 
-	public void setContSubsAntecipada(Boolean contSubsAntecipada) {
-		setBoolean("contSubsAntecipada", contSubsAntecipada);
+	public void setInicioCreditoAutomatico(Boolean inicioCreditoAutomatico) {
+		setBoolean("inicioCreditoAutomatico", inicioCreditoAutomatico);
 	}
 
-	public Boolean getIcmsSubsTribAntecipada() {
-		return getBoolean("icmsSubsTribAntecipada");
+	public Boolean getGeraFichaAutomatico() {
+		return getBoolean("geraFichaAutomatico");
 	}
 
-	public void setIcmsSubsTribAntecipada(Boolean icmsSubsTribAntecipada) {
-		setBoolean("icmsSubsTribAntecipada", icmsSubsTribAntecipada);
+	public void setGeraFichaAutomatico(Boolean geraFichaAutomatico) {
+		setBoolean("geraFichaAutomatico", geraFichaAutomatico);
 	}
 
-	public Boolean getCedSubsTribAntecipada() {
-		return getBoolean("cedSubsTribAntecipada");
+	public Boolean getCompraVendaAtivo() {
+		return getBoolean("compraVendaAtivo");
 	}
 
-	public void setCedSubsTribAntecipada(Boolean cedSubsTribAntecipada) {
-		setBoolean("cedSubsTribAntecipada", cedSubsTribAntecipada);
+	public void setCompraVendaAtivo(Boolean compraVendaAtivo) {
+		setBoolean("cedSubsTribAntecipada", compraVendaAtivo);
 	}
 
-	public Boolean getIcmsStRepassar() {
-		return getBoolean("icmsStRepassar");
+	public Boolean getNotaRateio() {
+		return getBoolean("notaRateio");
 	}
 
-	public void setIcmsStRepassar(Boolean icmsStRepassar) {
-		setBoolean("icmsStRepassar", icmsStRepassar);
+	public void setNotaRateio(Boolean notaRateio) {
+		setBoolean("notaRateio", notaRateio);
 	}
 
-	public Boolean getIcmsStComplementar() {
-		return getBoolean("icmsStComplementar");
+	public Boolean getNotaPropria() {
+		return getBoolean("notaPropria");
 	}
 
-	public void setIcmsStComplementar(Boolean icmsStComplementar) {
-		setBoolean("icmsStComplementar", icmsStComplementar);
+	public void setNotaPropria(Boolean notaPropria) {
+		setBoolean("notaRateio", notaPropria);
+	}
+
+	public Boolean getNotaComercio() {
+		return getBoolean("notaComercio");
+	}
+
+	public void setNotaComercio(Boolean notaComercio) {
+		setBoolean("notaRateio", notaComercio);
+	}
+
+	public Boolean getGerarNotaFaturamento() {
+		return getBoolean("gerarNotaFaturamento");
+	}
+
+	public void setGerarNotaFaturamento(Boolean gerarNotaFaturamento) {
+		setBoolean("gerarNotaFaturamento", gerarNotaFaturamento);
 	}
 
 }

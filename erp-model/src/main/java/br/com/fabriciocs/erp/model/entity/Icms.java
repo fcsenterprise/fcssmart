@@ -1,7 +1,14 @@
 package br.com.fabriciocs.erp.model.entity;
 
 import org.javalite.activejdbc.Model;
+import org.javalite.activejdbc.annotations.Table;
+import org.springframework.stereotype.Repository;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@Repository
+@Table("Icms")
+@JsonIgnoreProperties({ "frozen", "valid", "idName", "longId", "new" })
 public class Icms extends Model {
 	public void setCodigoTributacao(CodigoTributacao codigoTributacao) {
 		setParent(codigoTributacao);
@@ -35,12 +42,12 @@ public class Icms extends Model {
 		return parent(BaseIcms.class);
 	}
 
-	public void setTipoBaseIcms(TipoBaseIcms tipoBaseIcms) {
+	public void setTipoBaseIcms(TipoBase tipoBaseIcms) {
 		setParent(tipoBaseIcms);
 	}
 
-	public TipoBaseIcms getTipoBaseIcms() {
-		return parent(TipoBaseIcms.class);
+	public TipoBase getTipoBaseIcms() {
+		return parent(TipoBase.class);
 	}
 
 	public void setExtornaIcms(Boolean extornaIcms) {

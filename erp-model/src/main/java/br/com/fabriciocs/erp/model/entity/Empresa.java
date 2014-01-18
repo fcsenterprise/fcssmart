@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @BelongsToParents({
 		@BelongsTo(parent = Telefone.class, foreignKeyName = "telefone"),
 		@BelongsTo(parent = Endereco.class, foreignKeyName = "endereco") })
-@Repository
+
 @JsonIgnoreProperties({ "frozen", "valid", "idName", "longId", "new" })
 public class Empresa extends Model {
 

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@Repository
+
 @Table("Departamentos")
 @BelongsTo(parent = Empresa.class, foreignKeyName = "empresa")
 @JsonIgnoreProperties({ "frozen", "valid", "idName", "longId", "new" })

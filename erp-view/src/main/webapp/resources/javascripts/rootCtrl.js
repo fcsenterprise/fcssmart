@@ -460,7 +460,7 @@ $app
 						}
 					};
 				});
-$app.directive('appTable', function($location, $modal) {
+$app.directive('appTable',['$location','$modal', function($location, $modal) {
 
 	return {
 		restrict : 'A, C',
@@ -518,7 +518,7 @@ $app.directive('appTable', function($location, $modal) {
 			recriate : '@?'
 		}
 	};
-});
+}]);
 
 $app.directive('appEndereco', function() {
 	return {

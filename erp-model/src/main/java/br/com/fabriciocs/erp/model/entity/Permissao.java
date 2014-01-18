@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@Repository
+
 @Table("Permissoes")
 @BelongsToParents({
 		@BelongsTo(foreignKeyName = "credencial", parent = Credencial.class),

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Table("Telefones")
-@Repository
+
 @JsonIgnoreProperties({ "frozen", "valid", "idName", "longId", "new" })
 public class Telefone extends Model {
 	public void setDdd(String ddd) {

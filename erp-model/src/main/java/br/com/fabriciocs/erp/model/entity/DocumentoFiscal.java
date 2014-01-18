@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@Repository
+
 @Table("DocumentosFiscais")
 @JsonIgnoreProperties({ "frozen", "valid", "idName", "longId", "new" })
 public class DocumentoFiscal extends Model {

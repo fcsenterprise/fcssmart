@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@Repository
+
 @Table("Mercados")
 @JsonIgnoreProperties({ "frozen", "valid", "idName", "longId", "new" })
 public class Mercado extends SimpleTable {

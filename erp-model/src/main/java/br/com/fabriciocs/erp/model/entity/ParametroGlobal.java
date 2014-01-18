@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Repository
+
 @Table("ParametrosGlobais")
 @BelongsTo(parent = Empresa.class, foreignKeyName = "empresa")
 public class ParametroGlobal extends Model {

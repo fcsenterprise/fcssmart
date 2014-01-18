@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@Repository
+
 @Table("Iss")
 @JsonIgnoreProperties({ "frozen", "valid", "idName", "longId", "new" })
 public class Iss extends Model {

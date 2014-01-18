@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Table("Enderecos")
-@Repository
+
 @JsonIgnoreProperties({ "frozen", "valid", "idName", "longId", "new" })
 public class Endereco extends Model {
 	@JsonInclude(Include.NON_EMPTY)

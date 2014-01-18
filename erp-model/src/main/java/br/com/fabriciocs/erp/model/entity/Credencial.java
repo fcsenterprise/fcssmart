@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@Repository
+
 @Table("Credenciais")
 @JsonIgnoreProperties({ "frozen", "valid", "idName", "longId", "new",
 		"username", "password", "enabled", "authorities", "metamodelLocal",

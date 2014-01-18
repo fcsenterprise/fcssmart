@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@Repository
+
 @Transactional
 @Table("Menus")
 @JsonIgnoreProperties({ "frozen", "valid", "idName", "longId", "new" , "menu"})

@@ -5,7 +5,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 import javax.sql.DataSource;
 
 import org.javalite.activejdbc.Base;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ public class CredencialTest {
 
 	private MockMvc mockMvc;
 
-	@Before
+	// @Before
 	public void setup() {
 		this.mockMvc = webAppContextSetup(this.wac).build();
 		if (!Base.hasConnection()) {

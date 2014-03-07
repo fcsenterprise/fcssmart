@@ -1,0 +1,29 @@
+<div app-page>
+	<div app-tab>
+		<div app-tab-header>
+			<div header-option header-active="true" content-id="basico"
+				header-icon="fa fa-home" header-title="'B&aacute;sico'"></div>
+		</div>
+		<div app-tab-content>
+			<div content-option content-id="basico" content-active="true">
+				<div class="col-lg-6">
+					<div app-form>
+						<app-input label="'C&oacute;digo'"> <input type="text"
+							class="validate[required,maxSize[4]]"
+							data-prompt-position="topLeft" ng-model="natureza.codigo" /> </app-input>
+						<app-input label="'Descri&ccedil;&atilde;o'"> <input
+							type="text" class="validate[required,minSize[3]]"
+							data-prompt-position="topLeft" ng-model="natureza.descricao" />
+						</app-input>
+						<app-input label="'Tipo'"> <select ui-select2
+							ng-model="natureza.tipo" data-placeholder="Selecione">
+							<option value=""></option>
+							<option value="0">Entrada</option>
+							<option vlaue="1">Sa&iacute;da</option>
+						</select> </app-input>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

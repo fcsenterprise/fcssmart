@@ -1,0 +1,78 @@
+<!-- find me in partials/data_tables_custom -->
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="box">
+			<div class="box-header">
+				<span class="title">Departamento</span>
+			</div>
+			<div class="box-content">
+				<div id="mml" class="modal fade">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"
+									aria-hidden="true">&times;</button>
+								<h4 class="modal-title">title</h4>
+							</div>
+							<div class="modal-body nopadding">
+								<empresa-table empresa="email.empresa" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<form class="form-horizontal fill-up validatable" app-form-validate
+					id="email-form">
+					<div class="box-content padded">
+						<div class="tab-content">
+							<div class="tab-pane active" id="basico">
+								<div class="box-content">
+									<div class="row">
+										<div class="col-lg-6">
+											<ul class="padded separate-sections">
+												<li class="input"><label>Encoding</label><input
+													type="text" class="validate[text]"
+													data-prompt-position="topLeft"
+													ng-model="email.config['servidor.email.encoding']" /></li>
+												<li class="input"><label>Host</label><input type="text"
+													class="validate[text]" data-prompt-position="topLeft"
+													ng-model="email.config['servidor.email.host']" /></li>
+												<li class="input"><label>Usu&aacute;rio</label><input
+													type="text" class="validate[text]"
+													data-prompt-position="topLeft"
+													ng-model="email.config['servidor.email.usuario']" /></li>
+												<li class="input"><label>Senha</label><input
+													type="text" class="validate[text]"
+													data-prompt-position="topLeft"
+													ng-model="email.config['servidor.email.senha']" /></li>
+												<li class="input"><label>Porta</label><input
+													type="text" class="validate[number]"
+													data-prompt-position="topLeft"
+													ng-model="email.config['servidor.email.host.port']" /></li>
+												<li class="input"><label>Protocolo</label><input
+													type="text" class="validate[number]"
+													data-prompt-position="topLeft"
+													ng-model="email.config['servidor.email.protocol']" /></li>
+												<li class="input"><label>Email Seguro?</label><input
+													type="text" class="validate[number]"
+													data-prompt-position="topLeft"
+													ng-model="email.config['servidor.email.smtp.auth']" /></li>
+												<li class="input"><label>Ativar TLS</label><input
+													type="text" class="validate[number]"
+													data-prompt-position="topLeft"
+													ng-model="email.config['servidor.email.smtp.starttls.enable']" /></li>
+
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+				<app-actions resource="/erp/email/" value="email"
+					form-id="email-form"></app-actions>
+			</div>
+		</div>
+	</div>
+</div>

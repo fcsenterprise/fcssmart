@@ -1,0 +1,165 @@
+<!-- find me in partials/data_tables_custom -->
+
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="box">
+			<div class="box-header">
+				<ul class="nav nav-tabs nav-tabs-left">
+					<li class="active"><a href="#basico" data-toggle="tab"><i
+							class="icon- fa fa-book"></i><span>B&aacute;sico</span></a></li>
+					<li ng-show="usuario.id != null"><a href="#permissoes"
+						data-toggle="tab"><i class="icon-home"></i><span>Permiss&otilde;es</span></a></li>
+				</ul>
+			</div>
+			<div class="box-content">
+				<div id="model_empresa" class="modal fade">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"
+									aria-hidden="true">&times;</button>
+								<h4 class="modal-title">Empresas</h4>
+							</div>
+							<div class="modal-body nopadding">
+								<empresa-table empresa="permissao.empresa" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="model_menu" class="modal fade">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"
+									aria-hidden="true">&times;</button>
+								<h4 class="modal-title">Menus</h4>
+							</div>
+							<div class="modal-body nopadding">
+								<div class="dark-nav">
+									<app-menu menus="promise" selected="permissao.menu"></app-menu>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="box-content padded">
+				<div class="tab-content">
+					<div class="tab-pane active" id="basico">
+						<div class="box-content">
+							<div class="row">
+								<div class="col-lg-6">
+									<form class="form-horizontal fill-up validatable"
+										app-form-validate id="usuario-form">
+										<ul class="padded separate-sections">
+											<li class="input"><label>Nome</label><input type="text"
+												class="validate[required,minSize[3],text]"
+												data-prompt-position="topLeft" ng-model="usuario.nome" /></li>
+											<li><label>CPF</label> <input type="text"
+												class="validate[required]" ui-mask="999.999.999-99"
+												data-prompt-position="topLeft" ng-model="usuario.cpf" /></li>
+											<li><label>Email</label> <input type="email"
+												class="validate[required,custom[email]]"
+												data-prompt-position="topLeft"
+												ng-model="usuario.credencial.email" /></li>
+											<li><label>Login</label> <input type="text"
+												class="validate[required]" data-prompt-position="topLeft"
+												ng-model="usuario.credencial.login" /></li>
+											<li><div>
+													<input type="checkbox" id="c2" name="cc2" app-checkbox
+														ng-model="usuario.credencial.bloqueado"
+														ng-checked="usuario.credencial.bloqueado"
+														ng-init="usuario.credencial.bloqueado = false" /> <label
+														for="c1">Bloqueado</label>
+												</div></li>
+											<li><div>
+													<input type="checkbox" id="c2" name="cc2" app-checkbox
+														ng-model="usuario.credencial.admin"
+														ng-checked="usuario.credencial.admin"
+														ng-init="usuario.credencial.admin = false" /> <label
+														for="c1">Administrador</label>
+												</div></li>
+											<li><a class="btn btn-blue" ng-href=""
+												ng-click="reenviarSenha()" ng-show="usuario!=null">Enviar
+													Nova Senha</a></li>
+										</ul>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane" id="permissoes">
+						<form class="validatable" app-form-validate id="permissao-form">
+							<div class="row">
+								<div class="col-lg-6">
+									<ul class="padded separate-sections">
+										<li class="input">
+											<div class="row vpadded">
+												<div class="col-lg-2">
+													<a modal-shower modal-id="model_empresa"
+														class="btn btn-green">Empresa: </a>
+												</div>
+												<div class="col-lg-8">
+													<span class="alert alert-info" ng-show="permissao.empresa">{{permissao.empresa.id}}
+														- {{permissao.empresa.cnpj}} -
+														{{permissao.empresa.razaoSocial}}</span>
+												</div>
+											</div>
+										</li>
+										<li class="input">
+											<div class="row vpadded">
+												<div class="col-lg-2">
+													<a modal-shower modal-id="model_menu" class="btn btn-green">Menus
+														: </a>
+												</div>
+												<div class="col-lg-8">
+													<span class="alert alert-info" ng-show="permissao.menu">{{permissao.menu.id}}
+														- {{permissao.menu.nome}} - {{permissao.menu.url}}</span>
+
+												</div>
+											</div>
+										</li>
+										<li class="input"><div>
+												<input type="checkbox" id="c1" name="cc1" app-checkbox
+													ng-model="permissao.ler" ng-checked="permissao.ler" /> <label
+													for="c1">Listar</label>
+											</div>
+											<div>
+												<input type="checkbox" id="c2" name="cc2" app-checkbox
+													ng-model="permissao.criar" /> <label for="c1">Salvar</label>
+											</div>
+											<div>
+												<input type="checkbox" id="c3" name="cc3" app-checkbox
+													ng-model="permissao.editar" /> <label for="c3">Editar</label>
+											</div>
+											<div>
+												<input type="checkbox" id="c4" name="cc4" app-checkbox
+													ng-model="permissao.remover" /> <label for="c4">Remover</label>
+											</div></li>
+										<li><permissao-actions value="permissao"
+												form-id="permissao-form" credencial="usuario.credencial"
+												credencial-id="usuario.credencial.id" /></li>
+									</ul>
+								</div>
+							</div>
+							<div class="box">
+								<div class="box-header">
+									<span class="title">Permiss&otilde;es</span>
+								</div>
+								<div class="box-content">
+									<table id="{{$id}}" app-table app-table-columns="columns"
+										app-table-selected="permissao" app-table-func="tableFunc"
+										recriate="true" app-table-link="permissaoLink"></table>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<app-actions resource="/erp/usuario/:paramId" value="usuario"
+			form-id="usuario-form"></app-actions>
+		<usuario-table usuario="usuario" />
+	</div>
+</div>

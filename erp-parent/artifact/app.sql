@@ -278,6 +278,7 @@ CREATE TABLE CodTributacoes
 (
 	id INTEGER NOT NULL,
 	descricao VARCHAR(255) NOT NULL,
+		PRIMARY KEY (id),
 	UNIQUE UQ_CodTributacoes_descricao(descricao),
 	UNIQUE UQ_CodTributacoes_id(id)
 
